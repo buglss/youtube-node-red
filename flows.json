@@ -1,0 +1,930 @@
+[
+    {
+        "id": "8fb1dccaf9f288b4",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "9f8e1da7e1e352f6",
+        "type": "mongodb4-client",
+        "name": "",
+        "protocol": "mongodb",
+        "hostname": "localhost",
+        "port": "",
+        "dbName": "login",
+        "appName": "",
+        "authSource": "",
+        "authMechanism": "DEFAULT",
+        "tls": false,
+        "tlsCAFile": "",
+        "tlsCertificateKeyFile": "",
+        "tlsInsecure": false,
+        "connectTimeoutMS": "30000",
+        "socketTimeoutMS": "0",
+        "minPoolSize": "0",
+        "maxPoolSize": "100",
+        "maxIdleTimeMS": "0",
+        "uri": "",
+        "advanced": "{}",
+        "uriTabActive": "tab-uri-simple"
+    },
+    {
+        "id": "e07b0ced06c3b1ac",
+        "type": "http in",
+        "z": "8fb1dccaf9f288b4",
+        "name": "",
+        "url": "/login",
+        "method": "get",
+        "upload": false,
+        "skipBodyParsing": false,
+        "swaggerDoc": "",
+        "x": 160,
+        "y": 420,
+        "wires": [
+            [
+                "a659d0d4aa44bc64",
+                "33c98abcec950164"
+            ]
+        ]
+    },
+    {
+        "id": "4448ecebd91e75b8",
+        "type": "template",
+        "z": "8fb1dccaf9f288b4",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <title>How To Create</title>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css\">\n  <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">   \n     \n <style>\n  a {\n    text-decoration: none;\n}\n.login-page {\n    width: 100%;\n    height: 100vh;\n    display: inline-block;\n    display: flex;\n    align-items: center;\n}\n.form-right i {\n    font-size: 100px;\n}\n </style>\n</head>\n<body>\n\n    <div class=\"login-page bg-light\">\n        <div class=\"container\">\n            <div class=\"row\">\n                <div class=\"col-lg-10 offset-lg-1\">\n                    {{#token.username}}\n                    <div class=\"alert alert-primary\" role=\"alert\">\n                        <p>Hoşgeldin {{.}}</p>\n                    </div>\n                    {{/token.username}}\n                    {{#message}}\n                        <div class=\"alert alert-danger\" role=\"alert\">\n                            <p>{{.}}</p>\n                        </div>\n                    {{/message}}\n                    {{#successMessage}}\n                        <div class=\"alert alert-success\" role=\"alert\">\n                            <p>{{.}}</p>\n                        </div>\n                    {{/successMessage}}\n                  <h3 class=\"mb-3\">Login Now</h3>\n                    <div class=\"bg-white shadow rounded\">\n                        <div class=\"row\">\n                            <div class=\"col-md-7 pe-0\">\n                                <div class=\"form-left h-100 py-5 px-5\">\n                                    <form method=\"post\" action=\"/login\" class=\"row g-4\">\n                                            <div class=\"col-12\">\n                                                <label>Username<span class=\"text-danger\">*</span></label>\n                                                <div class=\"input-group\">\n                                                    <div class=\"input-group-text\"><i class=\"bi bi-person-fill\"></i></div>\n                                                    <input value=\"{{formData.username}}\" required type=\"text\" class=\"form-control\" placeholder=\"Enter Username\" name=\"username\">\n                                                </div>\n                                            </div>\n\n                                            <div class=\"col-12\">\n                                                <label>Password<span class=\"text-danger\">*</span></label>\n                                                <div class=\"input-group\">\n                                                    <div class=\"input-group-text\"><i class=\"bi bi-lock-fill\"></i></div>\n                                                    <input required type=\"password\" class=\"form-control\" placeholder=\"Enter Password\" name=\"password\">\n                                                </div>\n                                            </div>\n\n                                            <div class=\"col-sm-6\">\n                                                <div class=\"form-check\">\n                                                    <input class=\"form-check-input\" type=\"checkbox\" id=\"inlineFormCheck\">\n                                                    <label class=\"form-check-label\" for=\"inlineFormCheck\">Remember me</label>\n                                                </div>\n                                            </div>\n\n                                            <div class=\"col-sm-6\">\n                                                <a href=\"#\" class=\"float-end text-primary\">Forgot Password?</a>\n                                            </div>\n\n                                            <div class=\"col-12\">\n                                                <button type=\"submit\" class=\"btn btn-primary px-4 float-end mt-4\">login</button>\n                                            </div>\n                                    </form>\n                                    <form method=\"post\" action=\"/logout\" class=\"row g-4\">\n                                            <div class=\"col-12\">\n                                                <button type=\"submit\" class=\"btn btn-info px-4 float-end mt-4\">logout</button>\n                                            </div>\n                                    </form>\n                                </div>\n                            </div>\n                            <div class=\"col-md-5 ps-0 d-none d-md-block\">\n                                <div class=\"form-right h-100 bg-primary text-white text-center pt-5\">\n                                    <i class=\"bi bi-bootstrap\"></i>\n                                    <h2 class=\"fs-1\">Welcome Back!!!</h2>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                    <p class=\"text-end text-secondary mt-3\">Bootstrap 5 Login Page Design</p>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <!-- Bootstrap JS -->\n     \n</body>\n</html>",
+        "output": "str",
+        "x": 640,
+        "y": 420,
+        "wires": [
+            [
+                "015711d3385faab8",
+                "9971370cd1c5a030"
+            ]
+        ]
+    },
+    {
+        "id": "015711d3385faab8",
+        "type": "http response",
+        "z": "8fb1dccaf9f288b4",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 810,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "22800ea9d6911e56",
+        "type": "http in",
+        "z": "8fb1dccaf9f288b4",
+        "name": "",
+        "url": "/login",
+        "method": "post",
+        "upload": false,
+        "skipBodyParsing": false,
+        "swaggerDoc": "",
+        "x": 170,
+        "y": 640,
+        "wires": [
+            [
+                "3706b30760ed9431",
+                "1eef9485b972f20f"
+            ]
+        ]
+    },
+    {
+        "id": "f10e1d0cfb753b4f",
+        "type": "http in",
+        "z": "8fb1dccaf9f288b4",
+        "name": "",
+        "url": "/logout",
+        "method": "post",
+        "upload": false,
+        "skipBodyParsing": false,
+        "swaggerDoc": "",
+        "x": 170,
+        "y": 780,
+        "wires": [
+            [
+                "8957d837cba2f40f",
+                "600a49bc624c6b26"
+            ]
+        ]
+    },
+    {
+        "id": "8957d837cba2f40f",
+        "type": "debug",
+        "z": "8fb1dccaf9f288b4",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 360,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "3706b30760ed9431",
+        "type": "debug",
+        "z": "8fb1dccaf9f288b4",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 360,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "88fe7594ee13f276",
+        "type": "inject",
+        "z": "8fb1dccaf9f288b4",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "1234",
+        "payloadType": "str",
+        "x": 170,
+        "y": 200,
+        "wires": [
+            [
+                "4d1d18ca04a9e56a"
+            ]
+        ]
+    },
+    {
+        "id": "4d1d18ca04a9e56a",
+        "type": "bcrypt",
+        "z": "8fb1dccaf9f288b4",
+        "name": "",
+        "action": "encrypt",
+        "field": "payload",
+        "hash": "payload",
+        "target": "payload",
+        "assignment": "replace",
+        "match": "match",
+        "outputs": 1,
+        "rounds": 10,
+        "x": 330,
+        "y": 200,
+        "wires": [
+            [
+                "39d603405d58b4b5",
+                "11140632de3105ea"
+            ]
+        ]
+    },
+    {
+        "id": "39d603405d58b4b5",
+        "type": "debug",
+        "z": "8fb1dccaf9f288b4",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 540,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "3744e62000d9e43f",
+        "type": "mongodb4",
+        "z": "8fb1dccaf9f288b4",
+        "clientNode": "9f8e1da7e1e352f6",
+        "mode": "collection",
+        "collection": "user",
+        "operation": "findOne",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "",
+        "x": 400,
+        "y": 300,
+        "wires": [
+            [
+                "ff6af30fcbe5a1e9"
+            ]
+        ]
+    },
+    {
+        "id": "ed8bfb9864c22ef6",
+        "type": "inject",
+        "z": "8fb1dccaf9f288b4",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"username\":111}",
+        "payloadType": "json",
+        "x": 200,
+        "y": 300,
+        "wires": [
+            [
+                "3744e62000d9e43f"
+            ]
+        ]
+    },
+    {
+        "id": "ff6af30fcbe5a1e9",
+        "type": "debug",
+        "z": "8fb1dccaf9f288b4",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "342a5f5093ce919b",
+        "type": "mongodb4",
+        "z": "8fb1dccaf9f288b4",
+        "clientNode": "9f8e1da7e1e352f6",
+        "mode": "collection",
+        "collection": "user",
+        "operation": "updateOne",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "",
+        "x": 710,
+        "y": 200,
+        "wires": [
+            [
+                "cf34d22645fd3371"
+            ]
+        ]
+    },
+    {
+        "id": "11140632de3105ea",
+        "type": "function",
+        "z": "8fb1dccaf9f288b4",
+        "name": "userdata",
+        "func": "let userData = {\n    username: \"demo\",\n    password: msg.payload,\n    createdAt: new Date()\n}\n\nmsg.payload = [\n    {\n        username: userData.username\n    },\n    {\n        $set: userData\n    },\n    {\n        upsert: true\n    }\n]\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 200,
+        "wires": [
+            [
+                "342a5f5093ce919b"
+            ]
+        ]
+    },
+    {
+        "id": "cf34d22645fd3371",
+        "type": "debug",
+        "z": "8fb1dccaf9f288b4",
+        "name": "debug 5",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 900,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "029c0cd70f2cdde3",
+        "type": "bcrypt",
+        "z": "8fb1dccaf9f288b4",
+        "name": "",
+        "action": "verify",
+        "field": "plainPass",
+        "hash": "hashPass",
+        "target": "payload",
+        "assignment": "replace",
+        "match": "match",
+        "outputs": 1,
+        "rounds": 10,
+        "x": 880,
+        "y": 600,
+        "wires": [
+            [
+                "d21fe59e5938bca9"
+            ]
+        ]
+    },
+    {
+        "id": "538f8d866d1a4739",
+        "type": "mongodb4",
+        "z": "8fb1dccaf9f288b4",
+        "clientNode": "9f8e1da7e1e352f6",
+        "mode": "collection",
+        "collection": "user",
+        "operation": "findOne",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "",
+        "x": 560,
+        "y": 620,
+        "wires": [
+            [
+                "a17d3917fe6c4f45"
+            ]
+        ]
+    },
+    {
+        "id": "1eef9485b972f20f",
+        "type": "function",
+        "z": "8fb1dccaf9f288b4",
+        "name": "validasyon&mql",
+        "func": "if(!msg.payload.username || !msg.payload.password) {\n    msg.message = \"Kullanıcı adı ve parola boş bırakılamaz.\"\n    return [null, msg]\n}\n\nmsg.formData = msg.payload\n\nmsg.payload = {\n    username: msg.payload.username\n}\n\nreturn msg;",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 640,
+        "wires": [
+            [
+                "538f8d866d1a4739",
+                "8e3bee65b9e23d22"
+            ],
+            [
+                "6c9e3d91b3cd784d",
+                "21e18caa98796a96"
+            ]
+        ]
+    },
+    {
+        "id": "6c9e3d91b3cd784d",
+        "type": "link out",
+        "z": "8fb1dccaf9f288b4",
+        "name": "link out 1",
+        "mode": "link",
+        "links": [
+            "ee067785bd611f9b",
+            "81d8f37e2655f098"
+        ],
+        "x": 505,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "ee067785bd611f9b",
+        "type": "link in",
+        "z": "8fb1dccaf9f288b4",
+        "name": "login-error",
+        "links": [
+            "6c9e3d91b3cd784d",
+            "bdca829e27bc8567",
+            "4a510128cea940a8"
+        ],
+        "x": 195,
+        "y": 380,
+        "wires": [
+            [
+                "2d9fb8e3ef130d41",
+                "33c98abcec950164"
+            ]
+        ]
+    },
+    {
+        "id": "a17d3917fe6c4f45",
+        "type": "function",
+        "z": "8fb1dccaf9f288b4",
+        "name": "has user",
+        "func": "if(!msg.payload) {\n    msg.message = \"Kullanıcı adı veya parola hatalı.\"\n    return [null, msg];\n}\n\nmsg.user = msg.payload\nmsg.plainPass = msg.formData.password\nmsg.hashPass = msg.user.password\n\nreturn msg;",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 720,
+        "y": 620,
+        "wires": [
+            [
+                "029c0cd70f2cdde3",
+                "3519981ea04f1524"
+            ],
+            [
+                "bdca829e27bc8567",
+                "c7c574f7da72bdb3"
+            ]
+        ]
+    },
+    {
+        "id": "bdca829e27bc8567",
+        "type": "link out",
+        "z": "8fb1dccaf9f288b4",
+        "name": "link out 2",
+        "mode": "link",
+        "links": [
+            "ee067785bd611f9b",
+            "81d8f37e2655f098"
+        ],
+        "x": 835,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "d21fe59e5938bca9",
+        "type": "function",
+        "z": "8fb1dccaf9f288b4",
+        "name": "compare pass",
+        "func": "if(!msg.match) {\n    msg.message = \"Kullanıcı adı veya parola hatalı.\"\n    return [null, msg];\n}\n\nmsg.payload = {\n    username: msg.user.username\n}\n\nreturn msg;",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1060,
+        "y": 600,
+        "wires": [
+            [
+                "20c34cc85911a165",
+                "6fa8ba9254c9ac27"
+            ],
+            [
+                "4a510128cea940a8",
+                "db3577191dc2f816"
+            ]
+        ]
+    },
+    {
+        "id": "4a510128cea940a8",
+        "type": "link out",
+        "z": "8fb1dccaf9f288b4",
+        "name": "link out 3",
+        "mode": "link",
+        "links": [
+            "ee067785bd611f9b",
+            "81d8f37e2655f098"
+        ],
+        "x": 1215,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "20c34cc85911a165",
+        "type": "jwt sign",
+        "z": "8fb1dccaf9f288b4",
+        "name": "",
+        "alg": "HS256",
+        "exp": 3600,
+        "jwkurl": "",
+        "jwkkid": "",
+        "secret": "secret",
+        "key": "",
+        "signvar": "payload",
+        "storetoken": "payload",
+        "x": 1260,
+        "y": 580,
+        "wires": [
+            [
+                "b91425219b18f24e"
+            ]
+        ]
+    },
+    {
+        "id": "b91425219b18f24e",
+        "type": "function",
+        "z": "8fb1dccaf9f288b4",
+        "name": "cookies",
+        "func": "msg.cookies = {\n    token: msg.payload\n}\n\nmsg.successMessage = msg.formData.username + \" başarıyla giriş yaptı.\"\ndelete msg.formData\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1420,
+        "y": 580,
+        "wires": [
+            [
+                "092a19bf4c808c60",
+                "2c534c3e65386f3c"
+            ]
+        ]
+    },
+    {
+        "id": "a659d0d4aa44bc64",
+        "type": "debug",
+        "z": "8fb1dccaf9f288b4",
+        "name": "debug 6",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 320,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "2d9fb8e3ef130d41",
+        "type": "debug",
+        "z": "8fb1dccaf9f288b4",
+        "name": "debug 7",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 320,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "21e18caa98796a96",
+        "type": "debug",
+        "z": "8fb1dccaf9f288b4",
+        "name": "debug 8",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "8e3bee65b9e23d22",
+        "type": "debug",
+        "z": "8fb1dccaf9f288b4",
+        "name": "debug 9",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "c7c574f7da72bdb3",
+        "type": "debug",
+        "z": "8fb1dccaf9f288b4",
+        "name": "debug 10",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 880,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "3519981ea04f1524",
+        "type": "debug",
+        "z": "8fb1dccaf9f288b4",
+        "name": "debug 11",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 880,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "6fa8ba9254c9ac27",
+        "type": "debug",
+        "z": "8fb1dccaf9f288b4",
+        "name": "debug 12",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1260,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "db3577191dc2f816",
+        "type": "debug",
+        "z": "8fb1dccaf9f288b4",
+        "name": "debug 13",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1260,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "092a19bf4c808c60",
+        "type": "debug",
+        "z": "8fb1dccaf9f288b4",
+        "name": "debug 14",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1600,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "2c534c3e65386f3c",
+        "type": "link out",
+        "z": "8fb1dccaf9f288b4",
+        "name": "link out 4",
+        "mode": "link",
+        "links": [
+            "46b3646c5b93486b"
+        ],
+        "x": 1545,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "46b3646c5b93486b",
+        "type": "link in",
+        "z": "8fb1dccaf9f288b4",
+        "name": "login-success",
+        "links": [
+            "2c534c3e65386f3c",
+            "fc30242aa551decc"
+        ],
+        "x": 205,
+        "y": 460,
+        "wires": [
+            [
+                "33c98abcec950164"
+            ]
+        ]
+    },
+    {
+        "id": "600a49bc624c6b26",
+        "type": "function",
+        "z": "8fb1dccaf9f288b4",
+        "name": "cookies",
+        "func": "msg.cookies = {\n    token: null\n}\n\nmsg.successMessage = \"Başarıyla çıkış yapıldı.\"\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 780,
+        "wires": [
+            [
+                "fc30242aa551decc"
+            ]
+        ]
+    },
+    {
+        "id": "fc30242aa551decc",
+        "type": "link out",
+        "z": "8fb1dccaf9f288b4",
+        "name": "link out 5",
+        "mode": "link",
+        "links": [
+            "46b3646c5b93486b"
+        ],
+        "x": 475,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "f45b8451ab723aca",
+        "type": "jwt verify",
+        "z": "8fb1dccaf9f288b4",
+        "name": "",
+        "alg": [
+            "HS256"
+        ],
+        "jwkurl": "",
+        "secret": "secret",
+        "key": "",
+        "signvar": "token",
+        "storetoken": "token",
+        "x": 470,
+        "y": 400,
+        "wires": [
+            [
+                "4448ecebd91e75b8"
+            ]
+        ]
+    },
+    {
+        "id": "33c98abcec950164",
+        "type": "function",
+        "z": "8fb1dccaf9f288b4",
+        "name": "token",
+        "func": "msg.token = msg.req.cookies.token || msg.cookies?.token\n\nif(!msg.token || !msg.cookies?.token) return [null, msg]\n\nreturn msg;",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 420,
+        "wires": [
+            [
+                "f45b8451ab723aca"
+            ],
+            [
+                "4448ecebd91e75b8"
+            ]
+        ]
+    },
+    {
+        "id": "b1bca6505e3966d1",
+        "type": "catch",
+        "z": "8fb1dccaf9f288b4",
+        "name": "",
+        "scope": null,
+        "uncaught": false,
+        "x": 140,
+        "y": 60,
+        "wires": [
+            [
+                "79873d12b6c806a0",
+                "a224dfc1689f0eaf"
+            ]
+        ]
+    },
+    {
+        "id": "5c4e09896c94e058",
+        "type": "link out",
+        "z": "8fb1dccaf9f288b4",
+        "name": "link out 6",
+        "mode": "link",
+        "links": [
+            "244b4006e2e1fc1c"
+        ],
+        "x": 475,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "79873d12b6c806a0",
+        "type": "change",
+        "z": "8fb1dccaf9f288b4",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "message",
+                "pt": "msg",
+                "to": "error.message",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 330,
+        "y": 60,
+        "wires": [
+            [
+                "5c4e09896c94e058"
+            ]
+        ]
+    },
+    {
+        "id": "9971370cd1c5a030",
+        "type": "debug",
+        "z": "8fb1dccaf9f288b4",
+        "name": "debug 15",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "a224dfc1689f0eaf",
+        "type": "debug",
+        "z": "8fb1dccaf9f288b4",
+        "name": "ERROR",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 300,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "244b4006e2e1fc1c",
+        "type": "link in",
+        "z": "8fb1dccaf9f288b4",
+        "name": "login-catch",
+        "links": [
+            "5c4e09896c94e058"
+        ],
+        "x": 515,
+        "y": 360,
+        "wires": [
+            [
+                "4448ecebd91e75b8"
+            ]
+        ]
+    }
+]
