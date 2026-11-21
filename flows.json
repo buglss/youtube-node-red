@@ -1,5 +1,13 @@
 [
     {
+        "id": "71cf5884b26a0e52",
+        "type": "tab",
+        "label": "Root",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
         "id": "8fb1dccaf9f288b4",
         "type": "tab",
         "label": "Login",
@@ -11,6 +19,14 @@
         "id": "44aa120845cd32a5",
         "type": "tab",
         "label": "Kategori",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "ecdce1885c45ab19",
+        "type": "tab",
+        "label": "Destek",
         "disabled": false,
         "info": "",
         "env": []
@@ -58,6 +74,43 @@
         "meta": {},
         "color": "#D8BFD8",
         "icon": "font-awesome/fa-user-secret"
+    },
+    {
+        "id": "d5ba1d0c6c7ea686",
+        "type": "subflow",
+        "name": "Nav",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 140,
+                "y": 140,
+                "wires": [
+                    {
+                        "id": "629055f86f107d83"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 820,
+                "y": 140,
+                "wires": [
+                    {
+                        "id": "a7374cf26a6c5e31",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
+        "env": [],
+        "meta": {},
+        "color": "#3FADB5",
+        "outputLabels": [
+            "nav"
+        ],
+        "icon": "font-awesome/fa-navicon"
     },
     {
         "id": "9f8e1da7e1e352f6",
@@ -124,6 +177,548 @@
         ]
     },
     {
+        "id": "c6ec310e4a344d79",
+        "type": "template",
+        "z": "d5ba1d0c6c7ea686",
+        "name": "nav",
+        "field": "nav",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<ul class=\"nav\">\n  {{#menuItems}}\n  <li class=\"nav-item\">\n    <a class=\"nav-link {{active}}\" href=\"{{href}}\">{{name}}</a>\n  </li>\n  {{/menuItems}}\n  {{#token}}\n    <li class=\"nav-item\">\n      <form method=\"post\" action=\"/logout\">\n          <button type=\"submit\" class=\"btn btn-secondary\">logout</button>\n      </form>\n    </li>\n  {{/token}}\n</ul>",
+        "output": "str",
+        "x": 450,
+        "y": 140,
+        "wires": [
+            [
+                "a7374cf26a6c5e31"
+            ]
+        ]
+    },
+    {
+        "id": "629055f86f107d83",
+        "type": "function",
+        "z": "d5ba1d0c6c7ea686",
+        "name": "menuItems",
+        "func": "const reqUrl = msg.req.url\nmsg.menuItems = [\n    {\n        active: reqUrl === \"/\" ? \"active\" : \"\",\n        href: \"/\",\n        name: \"Ana Sayfa\"\n    },\n    {\n        active: reqUrl === \"/login\" ? \"active\" : \"\",\n        href: \"/login\",\n        name: \"Login\"\n    },\n    {\n        active: reqUrl === \"/ticket-kategori\" ? \"active\" : \"\",\n        href: \"/ticket-kategori\",\n        name: \"Ticket Kategori\"\n    },\n    {\n        active: reqUrl === \"/ticket-destek\" ? \"active\" : \"\",\n        href: \"/ticket-destek\",\n        name: \"Ticket Destek\"\n    }\n]\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 290,
+        "y": 140,
+        "wires": [
+            [
+                "c6ec310e4a344d79"
+            ]
+        ]
+    },
+    {
+        "id": "a7374cf26a6c5e31",
+        "type": "change",
+        "z": "d5ba1d0c6c7ea686",
+        "name": "",
+        "rules": [
+            {
+                "t": "delete",
+                "p": "menuItems",
+                "pt": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 640,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "084cb503f0735cc9",
+        "type": "catch",
+        "z": "71cf5884b26a0e52",
+        "name": "",
+        "scope": null,
+        "uncaught": false,
+        "x": 140,
+        "y": 80,
+        "wires": [
+            [
+                "7f5bd4f3acf465e1",
+                "67a1e74fb7e84c57"
+            ]
+        ]
+    },
+    {
+        "id": "7f5bd4f3acf465e1",
+        "type": "change",
+        "z": "71cf5884b26a0e52",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "message",
+                "pt": "msg",
+                "to": "error.message",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 330,
+        "y": 80,
+        "wires": [
+            [
+                "e57346e3e82be6e9"
+            ]
+        ]
+    },
+    {
+        "id": "67a1e74fb7e84c57",
+        "type": "debug",
+        "z": "71cf5884b26a0e52",
+        "name": "ERROR",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 300,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "ef8d24c3192ae55c",
+        "type": "http in",
+        "z": "71cf5884b26a0e52",
+        "name": "",
+        "url": "/",
+        "method": "get",
+        "upload": false,
+        "skipBodyParsing": false,
+        "swaggerDoc": "",
+        "x": 150,
+        "y": 240,
+        "wires": [
+            [
+                "46cde9e3771f245b"
+            ]
+        ]
+    },
+    {
+        "id": "46cde9e3771f245b",
+        "type": "subflow:ab3b90f3594ffeac",
+        "z": "71cf5884b26a0e52",
+        "name": "",
+        "x": 310,
+        "y": 240,
+        "wires": [
+            [
+                "3679237808194621"
+            ],
+            [
+                "3679237808194621"
+            ]
+        ]
+    },
+    {
+        "id": "98c729404cd102d0",
+        "type": "template",
+        "z": "71cf5884b26a0e52",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "\n<!DOCTYPE html>\n<html lang=\"tr\">\n<head>\n    <title>Ticket Sistem</title>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css\">\n  <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">   \n <style>\n    a {\n        text-decoration: none;\n    }\n    .page-body {\n        width: 100%;\n        height: 100vh;\n        display: inline-block;\n        display: flex;\n        align-items: center;\n    }\n    .form-right i {\n        font-size: 100px;\n    }\n </style>\n</head>\n<body>\n    {{{nav}}}\n    <div class=\"bg-light page-body\">\n        <div class=\"container\">\n            <div class=\"row\">\n                <div class=\"col-lg-10 offset-lg-1\">\n                    {{#token.username}}\n                    <div class=\"alert alert-primary\" role=\"alert\">\n                        <p>Hoşgeldin {{.}}</p>\n                    </div>\n                    {{/token.username}}\n                    {{#message}}\n                        <div class=\"alert alert-danger\" role=\"alert\">\n                            <p>{{.}}</p>\n                        </div>\n                    {{/message}}\n                    {{#successMessage}}\n                        <div class=\"alert alert-success\" role=\"alert\">\n                            <p>{{.}}</p>\n                        </div>\n                    {{/successMessage}}\n                    <h3 class=\"mb-3\">Ticket Sistem</h3>\n                    <div class=\"bg-white shadow rounded\">\n                        <div class=\"row\">\n                            <div class=\"col-md-7 pe-0\">\n                                <div class=\"form-left h-100 py-5 px-5\">\n                                    <form method=\"post\" action=\"/ticket-olustur\" class=\"row g-4\">\n                                            <div class=\"col-12\">\n                                                <label>Konu<span class=\"text-danger\">*</span></label>\n                                                <div class=\"input-group\">\n                                                    <div class=\"input-group-text\"><i class=\"bi bi-person-fill\"></i></div>\n                                                    <input value=\"{{formData.konu}}\" required type=\"text\" class=\"form-control\" placeholder=\"Konu giriniz\" name=\"konu\">\n                                                </div>\n                                            </div>\n\n                                            <div class=\"col-12\">\n                                                <label>Kategori<span class=\"text-danger\">*</span></label>\n                                                <div class=\"input-group\">\n                                                    <div class=\"input-group-text\"><i class=\"bi bi-lock-fill\"></i></div>\n                                                    <select class=\"form-control\" required name=\"kategori\">\n                                                        <option value=\"\">Kategori seçiniz...</option>\n                                                        {{#categories}}\n                                                        <option value=\"{{kategoriAdi}}\">{{kategoriAdi}}</option>\n                                                        {{/categories}}\n                                                    </select>\n                                                </div>\n                                            </div>\n\n                                            <div class=\"col-12\">\n                                                <label>Açıklama<span class=\"text-danger\">*</span></label>\n                                                <div class=\"input-group\">\n                                                    <div class=\"input-group-text\"><i class=\"bi bi-person-fill\"></i></div>\n                                                    <textarea value=\"{{formData.aciklama}}\"\" class=\"form-control\" required rows=\"4\" placeholder=\"Açıklama giriniz\" name=\"aciklama\"></textarea>\n                                                </div>\n                                            </div>\n\n                                            <div class=\"col-12\">\n                                                <button type=\"submit\" class=\"btn btn-primary px-4 float-end mt-4\">Gönder</button>\n                                            </div>\n                                    </form>\n                                </div>\n                            </div>\n                            <div class=\"col-md-5 ps-0 d-none d-md-block\">\n                                <div class=\"form-right h-100 bg-primary text-white text-center pt-5\">\n                                    <i class=\"bi bi-bootstrap\"></i>\n                                    <h2 class=\"fs-1\">Welcome Back!!!</h2>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                    <p class=\"text-end text-secondary mt-3\">Bootstrap 5 Ticket Oluşturma</p>\n                    <table class=\"table\">\n                        <thead>\n                            <tr>\n                                <th scope=\"col\">Konu</th>\n                                <th scope=\"col\">Açıklama</th>\n                                <th scope=\"col\">Destek Personeli</th>\n                                <th scope=\"col\">Durumu</th>\n                                <th scope=\"col\">#</th>\n                            </tr>\n                        </thead>\n                        <tbody>\n                            {{#tickets}}\n                            <tr>\n                                <td>{{konu}}</td>\n                                <td>{{aciklama}}</td>\n                                <td>{{destekPersoneli}}</td>\n                                <td>{{durum}}</td>\n                                <td>\n                                    <button type=\"button\" class=\"btn btn-info\">Mesaj</button>\n                                </td>\n                            </tr>\n                            {{/tickets}}\n                        </tbody>\n                        </table>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <!-- Bootstrap JS -->\n     \n</body>\n</html>",
+        "output": "str",
+        "x": 1680,
+        "y": 240,
+        "wires": [
+            [
+                "ba91496a2c8744fe"
+            ]
+        ]
+    },
+    {
+        "id": "ba91496a2c8744fe",
+        "type": "http response",
+        "z": "71cf5884b26a0e52",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1830,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "e57346e3e82be6e9",
+        "type": "link out",
+        "z": "71cf5884b26a0e52",
+        "name": "link out 13",
+        "mode": "link",
+        "links": [
+            "cf8b892897d96cb7"
+        ],
+        "x": 475,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "cf8b892897d96cb7",
+        "type": "link in",
+        "z": "71cf5884b26a0e52",
+        "name": "home-catch",
+        "links": [
+            "e57346e3e82be6e9"
+        ],
+        "x": 1395,
+        "y": 200,
+        "wires": [
+            [
+                "4066eef0818100c3"
+            ]
+        ]
+    },
+    {
+        "id": "4066eef0818100c3",
+        "type": "subflow:d5ba1d0c6c7ea686",
+        "z": "71cf5884b26a0e52",
+        "name": "",
+        "x": 1530,
+        "y": 240,
+        "wires": [
+            [
+                "98c729404cd102d0"
+            ]
+        ]
+    },
+    {
+        "id": "707b97c969e7d30c",
+        "type": "mongodb4",
+        "z": "71cf5884b26a0e52",
+        "clientNode": "9f8e1da7e1e352f6",
+        "mode": "collection",
+        "collection": "ticket",
+        "operation": "find",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "ticket",
+        "x": 650,
+        "y": 240,
+        "wires": [
+            [
+                "4cbbbaad72ba26c4"
+            ]
+        ]
+    },
+    {
+        "id": "4cbbbaad72ba26c4",
+        "type": "change",
+        "z": "71cf5884b26a0e52",
+        "name": "tickets",
+        "rules": [
+            {
+                "t": "move",
+                "p": "payload",
+                "pt": "msg",
+                "to": "tickets",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 810,
+        "y": 240,
+        "wires": [
+            [
+                "f4cc9604b8adcaaa"
+            ]
+        ]
+    },
+    {
+        "id": "3679237808194621",
+        "type": "function",
+        "z": "71cf5884b26a0e52",
+        "name": "myTickets",
+        "func": "msg.payload = [\n    {\n        user: msg.token?.username\n    }\n]\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 240,
+        "wires": [
+            [
+                "707b97c969e7d30c"
+            ]
+        ]
+    },
+    {
+        "id": "3cfb5a0e9e4607d5",
+        "type": "subflow:ab3b90f3594ffeac",
+        "z": "71cf5884b26a0e52",
+        "name": "",
+        "x": 390,
+        "y": 440,
+        "wires": [
+            [
+                "0bbac0a4ad2a956e"
+            ],
+            [
+                "6988bca6190437fc"
+            ]
+        ]
+    },
+    {
+        "id": "2bdc3360336a667c",
+        "type": "http in",
+        "z": "71cf5884b26a0e52",
+        "name": "",
+        "url": "/ticket-olustur",
+        "method": "post",
+        "upload": false,
+        "skipBodyParsing": false,
+        "swaggerDoc": "",
+        "x": 190,
+        "y": 440,
+        "wires": [
+            [
+                "3cfb5a0e9e4607d5"
+            ]
+        ]
+    },
+    {
+        "id": "0bbac0a4ad2a956e",
+        "type": "function",
+        "z": "71cf5884b26a0e52",
+        "name": "validasyon&mql",
+        "func": "const requireFields = {\n    \"konu\": \"Konu\",\n    \"kategori\": \"Kategori\",\n    \"aciklama\": \"Açıklama\"\n}\nmsg.formData = msg.payload\n\nfor(let field in msg.formData) {\n    if(requireFields[field] && msg.formData[field]) continue\n    node.error(requireFields[field] + \" alanı dolu olmak zorundadır.\", msg);\n    return\n}\n\nmsg.payload = [\n    {\n        ...msg.formData,\n        user: msg.token.username,\n        durum: \"Yeni\",\n        stamp: {\n            user: msg.token.username,\n            createdAt: new Date()\n        }\n    }\n]\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 420,
+        "wires": [
+            [
+                "1a394b9134b0d932"
+            ]
+        ]
+    },
+    {
+        "id": "6988bca6190437fc",
+        "type": "change",
+        "z": "71cf5884b26a0e52",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "message",
+                "pt": "msg",
+                "to": "Yetkisiz erişim.",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 590,
+        "y": 480,
+        "wires": [
+            [
+                "fcae2b561e4a2b24"
+            ]
+        ]
+    },
+    {
+        "id": "fcae2b561e4a2b24",
+        "type": "link out",
+        "z": "71cf5884b26a0e52",
+        "name": "link out 14",
+        "mode": "link",
+        "links": [
+            "244b4006e2e1fc1c"
+        ],
+        "x": 735,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "1a394b9134b0d932",
+        "type": "mongodb4",
+        "z": "71cf5884b26a0e52",
+        "clientNode": "9f8e1da7e1e352f6",
+        "mode": "collection",
+        "collection": "ticket",
+        "operation": "insertOne",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "",
+        "x": 780,
+        "y": 420,
+        "wires": [
+            [
+                "446f22f17bc8051c"
+            ]
+        ]
+    },
+    {
+        "id": "446f22f17bc8051c",
+        "type": "function",
+        "z": "71cf5884b26a0e52",
+        "name": "ticket res",
+        "func": "// Başarı Kontrolü !!\nif(msg.payload.acknowledged && msg.payload.insertedId) {\n    msg.successMessage = msg.formData.konu + \" konulu ticketınız başarıyla oluşturuldu.\"\n    delete msg.formData\n    return msg\n}\n\nmsg.message = msg.formData.konu + \" konulu ticketınız oluşturulamadı.\"\nreturn [null, msg];",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 940,
+        "y": 420,
+        "wires": [
+            [
+                "f5caf7bfb4b1f761"
+            ],
+            [
+                "10df4f115aeb9edb"
+            ]
+        ]
+    },
+    {
+        "id": "f5caf7bfb4b1f761",
+        "type": "link out",
+        "z": "71cf5884b26a0e52",
+        "name": "link out 16",
+        "mode": "link",
+        "links": [
+            "bb4ae6831a48f5b9"
+        ],
+        "x": 1075,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "10df4f115aeb9edb",
+        "type": "link out",
+        "z": "71cf5884b26a0e52",
+        "name": "link out 17",
+        "mode": "link",
+        "links": [
+            "bb4ae6831a48f5b9"
+        ],
+        "x": 1075,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "f4cc9604b8adcaaa",
+        "type": "mongodb4",
+        "z": "71cf5884b26a0e52",
+        "clientNode": "9f8e1da7e1e352f6",
+        "mode": "collection",
+        "collection": "kategori",
+        "operation": "find",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "kategoriler",
+        "x": 950,
+        "y": 240,
+        "wires": [
+            [
+                "6805b8db1d90313d"
+            ]
+        ]
+    },
+    {
+        "id": "6805b8db1d90313d",
+        "type": "change",
+        "z": "71cf5884b26a0e52",
+        "name": "categories",
+        "rules": [
+            {
+                "t": "move",
+                "p": "payload",
+                "pt": "msg",
+                "to": "categories",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1110,
+        "y": 240,
+        "wires": [
+            [
+                "c31da6a8f3919b48"
+            ]
+        ]
+    },
+    {
+        "id": "bb4ae6831a48f5b9",
+        "type": "link in",
+        "z": "71cf5884b26a0e52",
+        "name": "root-error",
+        "links": [
+            "10df4f115aeb9edb",
+            "f5caf7bfb4b1f761"
+        ],
+        "x": 355,
+        "y": 200,
+        "wires": [
+            [
+                "3679237808194621"
+            ]
+        ]
+    },
+    {
+        "id": "c31da6a8f3919b48",
+        "type": "function",
+        "z": "71cf5884b26a0e52",
+        "name": "ticket destek pers.",
+        "func": "msg.tickets.forEach(x => x.destekPersoneli = msg.categories.find(y => y.kategoriAdi === x.kategori).destekPersoneli)\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1310,
+        "y": 240,
+        "wires": [
+            [
+                "4066eef0818100c3"
+            ]
+        ]
+    },
+    {
         "id": "e07b0ced06c3b1ac",
         "type": "http in",
         "z": "8fb1dccaf9f288b4",
@@ -137,7 +732,6 @@
         "y": 420,
         "wires": [
             [
-                "a659d0d4aa44bc64",
                 "9d91fd49f56d1ca7"
             ]
         ]
@@ -151,14 +745,13 @@
         "fieldType": "msg",
         "format": "handlebars",
         "syntax": "mustache",
-        "template": "\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <title>Login</title>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css\">\n  <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">   \n     \n <style>\n  a {\n    text-decoration: none;\n}\n.login-page {\n    width: 100%;\n    height: 100vh;\n    display: inline-block;\n    display: flex;\n    align-items: center;\n}\n.form-right i {\n    font-size: 100px;\n}\n </style>\n</head>\n<body>\n\n    <div class=\"login-page bg-light\">\n        <div class=\"container\">\n            <div class=\"row\">\n                <div class=\"col-lg-10 offset-lg-1\">\n                    {{#token.username}}\n                    <div class=\"alert alert-primary\" role=\"alert\">\n                        <p>Hoşgeldin {{.}}</p>\n                    </div>\n                    {{/token.username}}\n                    {{#message}}\n                        <div class=\"alert alert-danger\" role=\"alert\">\n                            <p>{{.}}</p>\n                        </div>\n                    {{/message}}\n                    {{#successMessage}}\n                        <div class=\"alert alert-success\" role=\"alert\">\n                            <p>{{.}}</p>\n                        </div>\n                    {{/successMessage}}\n                  <h3 class=\"mb-3\">Login Now</h3>\n                    <div class=\"bg-white shadow rounded\">\n                        <div class=\"row\">\n                            <div class=\"col-md-7 pe-0\">\n                                <div class=\"form-left h-100 py-5 px-5\">\n                                    <form method=\"post\" action=\"/login\" class=\"row g-4\">\n                                            <div class=\"col-12\">\n                                                <label>Username<span class=\"text-danger\">*</span></label>\n                                                <div class=\"input-group\">\n                                                    <div class=\"input-group-text\"><i class=\"bi bi-person-fill\"></i></div>\n                                                    <input value=\"{{formData.username}}\" required type=\"text\" class=\"form-control\" placeholder=\"Enter Username\" name=\"username\">\n                                                </div>\n                                            </div>\n\n                                            <div class=\"col-12\">\n                                                <label>Password<span class=\"text-danger\">*</span></label>\n                                                <div class=\"input-group\">\n                                                    <div class=\"input-group-text\"><i class=\"bi bi-lock-fill\"></i></div>\n                                                    <input required type=\"password\" class=\"form-control\" placeholder=\"Enter Password\" name=\"password\">\n                                                </div>\n                                            </div>\n\n                                            <div class=\"col-sm-6\">\n                                                <div class=\"form-check\">\n                                                    <input class=\"form-check-input\" type=\"checkbox\" id=\"inlineFormCheck\">\n                                                    <label class=\"form-check-label\" for=\"inlineFormCheck\">Remember me</label>\n                                                </div>\n                                            </div>\n\n                                            <div class=\"col-sm-6\">\n                                                <a href=\"#\" class=\"float-end text-primary\">Forgot Password?</a>\n                                            </div>\n\n                                            <div class=\"col-12\">\n                                                <button type=\"submit\" class=\"btn btn-primary px-4 float-end mt-4\">login</button>\n                                            </div>\n                                    </form>\n                                    <form method=\"post\" action=\"/logout\" class=\"row g-4\">\n                                            <div class=\"col-12\">\n                                                <button type=\"submit\" class=\"btn btn-info px-4 float-end mt-4\">logout</button>\n                                            </div>\n                                    </form>\n                                </div>\n                            </div>\n                            <div class=\"col-md-5 ps-0 d-none d-md-block\">\n                                <div class=\"form-right h-100 bg-primary text-white text-center pt-5\">\n                                    <i class=\"bi bi-bootstrap\"></i>\n                                    <h2 class=\"fs-1\">Welcome Back!!!</h2>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                    <p class=\"text-end text-secondary mt-3\">Bootstrap 5 Login Page Design</p>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <!-- Bootstrap JS -->\n     \n</body>\n</html>",
+        "template": "\n<!DOCTYPE html>\n<html lang=\"tr\">\n<head>\n    <title>Login</title>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css\">\n  <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">   \n     \n <style>\n  a {\n    text-decoration: none;\n}\n.login-page {\n    width: 100%;\n    height: 100vh;\n    display: inline-block;\n    display: flex;\n    align-items: center;\n}\n.form-right i {\n    font-size: 100px;\n}\n </style>\n</head>\n<body>\n    {{{nav}}}\n    <div class=\"login-page bg-light\">\n        <div class=\"container\">\n            <div class=\"row\">\n                <div class=\"col-lg-10 offset-lg-1\">\n                    {{#token.username}}\n                    <div class=\"alert alert-primary\" role=\"alert\">\n                        <p>Hoşgeldin {{.}}</p>\n                    </div>\n                    {{/token.username}}\n                    {{#message}}\n                        <div class=\"alert alert-danger\" role=\"alert\">\n                            <p>{{.}}</p>\n                        </div>\n                    {{/message}}\n                    {{#successMessage}}\n                        <div class=\"alert alert-success\" role=\"alert\">\n                            <p>{{.}}</p>\n                        </div>\n                    {{/successMessage}}\n                  <h3 class=\"mb-3\">Login Now</h3>\n                    <div class=\"bg-white shadow rounded\">\n                        <div class=\"row\">\n                            <div class=\"col-md-7 pe-0\">\n                                <div class=\"form-left h-100 py-5 px-5\">\n                                    <form method=\"post\" action=\"/login\" class=\"row g-4\">\n                                            <div class=\"col-12\">\n                                                <label>Username<span class=\"text-danger\">*</span></label>\n                                                <div class=\"input-group\">\n                                                    <div class=\"input-group-text\"><i class=\"bi bi-person-fill\"></i></div>\n                                                    <input value=\"{{formData.username}}\" required type=\"text\" class=\"form-control\" placeholder=\"Enter Username\" name=\"username\">\n                                                </div>\n                                            </div>\n\n                                            <div class=\"col-12\">\n                                                <label>Password<span class=\"text-danger\">*</span></label>\n                                                <div class=\"input-group\">\n                                                    <div class=\"input-group-text\"><i class=\"bi bi-lock-fill\"></i></div>\n                                                    <input required type=\"password\" class=\"form-control\" placeholder=\"Enter Password\" name=\"password\">\n                                                </div>\n                                            </div>\n\n                                            <div class=\"col-sm-6\">\n                                                <div class=\"form-check\">\n                                                    <input class=\"form-check-input\" type=\"checkbox\" id=\"inlineFormCheck\">\n                                                    <label class=\"form-check-label\" for=\"inlineFormCheck\">Remember me</label>\n                                                </div>\n                                            </div>\n\n                                            <div class=\"col-sm-6\">\n                                                <a href=\"#\" class=\"float-end text-primary\">Forgot Password?</a>\n                                            </div>\n\n                                            <div class=\"col-12\">\n                                                <button type=\"submit\" class=\"btn btn-primary px-4 float-end mt-4\">login</button>\n                                            </div>\n                                    </form>\n                                </div>\n                            </div>\n                            <div class=\"col-md-5 ps-0 d-none d-md-block\">\n                                <div class=\"form-right h-100 bg-primary text-white text-center pt-5\">\n                                    <i class=\"bi bi-bootstrap\"></i>\n                                    <h2 class=\"fs-1\">Welcome Back!!!</h2>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                    <p class=\"text-end text-secondary mt-3\">Bootstrap 5 Login Page Design</p>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <!-- Bootstrap JS -->\n     \n</body>\n</html>",
         "output": "str",
-        "x": 560,
+        "x": 720,
         "y": 420,
         "wires": [
             [
-                "015711d3385faab8",
-                "9971370cd1c5a030"
+                "015711d3385faab8"
             ]
         ]
     },
@@ -169,7 +762,7 @@
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 730,
+        "x": 890,
         "y": 420,
         "wires": []
     },
@@ -187,7 +780,6 @@
         "y": 640,
         "wires": [
             [
-                "3706b30760ed9431",
                 "1eef9485b972f20f"
             ]
         ]
@@ -206,44 +798,9 @@
         "y": 780,
         "wires": [
             [
-                "8957d837cba2f40f",
                 "600a49bc624c6b26"
             ]
         ]
-    },
-    {
-        "id": "8957d837cba2f40f",
-        "type": "debug",
-        "z": "8fb1dccaf9f288b4",
-        "name": "debug 1",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 360,
-        "y": 820,
-        "wires": []
-    },
-    {
-        "id": "3706b30760ed9431",
-        "type": "debug",
-        "z": "8fb1dccaf9f288b4",
-        "name": "debug 2",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 360,
-        "y": 600,
-        "wires": []
     },
     {
         "id": "88fe7594ee13f276",
@@ -491,12 +1048,10 @@
         "y": 640,
         "wires": [
             [
-                "538f8d866d1a4739",
-                "8e3bee65b9e23d22"
+                "538f8d866d1a4739"
             ],
             [
-                "6c9e3d91b3cd784d",
-                "21e18caa98796a96"
+                "6c9e3d91b3cd784d"
             ]
         ]
     },
@@ -527,7 +1082,6 @@
         "y": 380,
         "wires": [
             [
-                "2d9fb8e3ef130d41",
                 "9d91fd49f56d1ca7"
             ]
         ]
@@ -548,12 +1102,10 @@
         "y": 620,
         "wires": [
             [
-                "029c0cd70f2cdde3",
-                "3519981ea04f1524"
+                "029c0cd70f2cdde3"
             ],
             [
-                "bdca829e27bc8567",
-                "c7c574f7da72bdb3"
+                "bdca829e27bc8567"
             ]
         ]
     },
@@ -586,12 +1138,10 @@
         "y": 600,
         "wires": [
             [
-                "20c34cc85911a165",
-                "6fa8ba9254c9ac27"
+                "20c34cc85911a165"
             ],
             [
-                "4a510128cea940a8",
-                "db3577191dc2f816"
+                "4a510128cea940a8"
             ]
         ]
     },
@@ -645,163 +1195,9 @@
         "y": 580,
         "wires": [
             [
-                "092a19bf4c808c60",
                 "2c534c3e65386f3c"
             ]
         ]
-    },
-    {
-        "id": "a659d0d4aa44bc64",
-        "type": "debug",
-        "z": "8fb1dccaf9f288b4",
-        "name": "debug 6",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 320,
-        "y": 460,
-        "wires": []
-    },
-    {
-        "id": "2d9fb8e3ef130d41",
-        "type": "debug",
-        "z": "8fb1dccaf9f288b4",
-        "name": "debug 7",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 320,
-        "y": 380,
-        "wires": []
-    },
-    {
-        "id": "21e18caa98796a96",
-        "type": "debug",
-        "z": "8fb1dccaf9f288b4",
-        "name": "debug 8",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 560,
-        "y": 720,
-        "wires": []
-    },
-    {
-        "id": "8e3bee65b9e23d22",
-        "type": "debug",
-        "z": "8fb1dccaf9f288b4",
-        "name": "debug 9",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 560,
-        "y": 580,
-        "wires": []
-    },
-    {
-        "id": "c7c574f7da72bdb3",
-        "type": "debug",
-        "z": "8fb1dccaf9f288b4",
-        "name": "debug 10",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 880,
-        "y": 700,
-        "wires": []
-    },
-    {
-        "id": "3519981ea04f1524",
-        "type": "debug",
-        "z": "8fb1dccaf9f288b4",
-        "name": "debug 11",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 880,
-        "y": 560,
-        "wires": []
-    },
-    {
-        "id": "6fa8ba9254c9ac27",
-        "type": "debug",
-        "z": "8fb1dccaf9f288b4",
-        "name": "debug 12",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1260,
-        "y": 540,
-        "wires": []
-    },
-    {
-        "id": "db3577191dc2f816",
-        "type": "debug",
-        "z": "8fb1dccaf9f288b4",
-        "name": "debug 13",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1260,
-        "y": 680,
-        "wires": []
-    },
-    {
-        "id": "092a19bf4c808c60",
-        "type": "debug",
-        "z": "8fb1dccaf9f288b4",
-        "name": "debug 14",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1600,
-        "y": 540,
-        "wires": []
     },
     {
         "id": "2c534c3e65386f3c",
@@ -889,8 +1285,7 @@
         "name": "link out 6",
         "mode": "link",
         "links": [
-            "244b4006e2e1fc1c",
-            "8ea33edaf16fb316"
+            "244b4006e2e1fc1c"
         ],
         "x": 475,
         "y": 60,
@@ -924,23 +1319,6 @@
         ]
     },
     {
-        "id": "9971370cd1c5a030",
-        "type": "debug",
-        "z": "8fb1dccaf9f288b4",
-        "name": "debug 15",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 740,
-        "y": 380,
-        "wires": []
-    },
-    {
         "id": "a224dfc1689f0eaf",
         "type": "debug",
         "z": "8fb1dccaf9f288b4",
@@ -966,13 +1344,14 @@
             "5c4e09896c94e058",
             "1ca01d1c7034a3f3",
             "20d19d991168e67f",
-            "9a51f7f1c3e05898"
+            "fcae2b561e4a2b24",
+            "53ef5e383dbf1ec5"
         ],
         "x": 435,
         "y": 360,
         "wires": [
             [
-                "4448ecebd91e75b8"
+                "9a6a33a695e162b3"
             ]
         ]
     },
@@ -1025,8 +1404,21 @@
         "y": 420,
         "wires": [
             [
-                "4448ecebd91e75b8"
+                "9a6a33a695e162b3"
             ],
+            [
+                "9a6a33a695e162b3"
+            ]
+        ]
+    },
+    {
+        "id": "9a6a33a695e162b3",
+        "type": "subflow:d5ba1d0c6c7ea686",
+        "z": "8fb1dccaf9f288b4",
+        "name": "",
+        "x": 550,
+        "y": 420,
+        "wires": [
             [
                 "4448ecebd91e75b8"
             ]
@@ -1132,14 +1524,13 @@
         "fieldType": "msg",
         "format": "handlebars",
         "syntax": "mustache",
-        "template": "\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <title>Ticket Kategori Tanımla</title>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css\">\n  <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">   \n     \n <style>\n  a {\n    text-decoration: none;\n}\n.login-page {\n    width: 100%;\n    height: 100vh;\n    display: inline-block;\n    display: flex;\n    align-items: center;\n}\n.form-right i {\n    font-size: 100px;\n}\n </style>\n</head>\n<body>\n\n    <div class=\"login-page bg-light\">\n        <div class=\"container\">\n            <div class=\"row\">\n                <div class=\"col-lg-10 offset-lg-1\">\n                    {{#token.username}}\n                    <div class=\"alert alert-primary\" role=\"alert\">\n                        <p>Hoşgeldin {{.}}</p>\n                    </div>\n                    {{/token.username}}\n                    {{#message}}\n                        <div class=\"alert alert-danger\" role=\"alert\">\n                            <p>{{.}}</p>\n                        </div>\n                    {{/message}}\n                    {{#successMessage}}\n                        <div class=\"alert alert-success\" role=\"alert\">\n                            <p>{{.}}</p>\n                        </div>\n                    {{/successMessage}}\n                  <h3 class=\"mb-3\">Kategori Tanımla</h3>\n                    <div class=\"bg-white shadow rounded\">\n                        <div class=\"row\">\n                            <div class=\"col-md-7 pe-0\">\n                                <div class=\"form-left h-100 py-5 px-5\">\n                                    <form method=\"post\" action=\"/kategori-olustur\" class=\"row g-4\">\n                                            <div class=\"col-12\">\n                                                <label>Kategori Adı<span class=\"text-danger\">*</span></label>\n                                                <div class=\"input-group\">\n                                                    <div class=\"input-group-text\"><i class=\"bi bi-person-fill\"></i></div>\n                                                    <input value=\"{{formData.kategoriAdi}}\" required type=\"text\" class=\"form-control\" placeholder=\"Kategori adı giriniz\" name=\"kategoriAdi\">\n                                                </div>\n                                            </div>\n\n                                            <div class=\"col-12\">\n                                                <label>Destek Personeli<span class=\"text-danger\">*</span></label>\n                                                <div class=\"input-group\">\n                                                    <div class=\"input-group-text\"><i class=\"bi bi-lock-fill\"></i></div>\n                                                    <select class=\"form-control\" required name=\"destekPersoneli\">\n                                                        <option value=\"\">Kişi seçiniz...</option>\n                                                        {{#payload}}\n                                                        <option value=\"{{username}}\">{{displayName}}</option>\n                                                        {{/payload}}\n                                                    </select>\n                                                </div>\n                                            </div>\n\n                                            <div class=\"col-12\">\n                                                <button type=\"submit\" class=\"btn btn-primary px-4 float-end mt-4\">Kaydet</button>\n                                            </div>\n                                    </form>\n                                </div>\n                            </div>\n                            <div class=\"col-md-5 ps-0 d-none d-md-block\">\n                                <div class=\"form-right h-100 bg-primary text-white text-center pt-5\">\n                                    <i class=\"bi bi-bootstrap\"></i>\n                                    <h2 class=\"fs-1\">Welcome Back!!!</h2>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                    <p class=\"text-end text-secondary mt-3\">Bootstrap 5 Ticket Kategori Tanımla</p>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <!-- Bootstrap JS -->\n     \n</body>\n</html>",
+        "template": "\n<!DOCTYPE html>\n<html lang=\"tr\">\n<head>\n    <title>Ticket Kategori Tanımla</title>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css\">\n  <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">   \n     \n <style>\n  a {\n    text-decoration: none;\n}\n.login-page {\n    width: 100%;\n    height: 100vh;\n    display: inline-block;\n    display: flex;\n    align-items: center;\n}\n.form-right i {\n    font-size: 100px;\n}\n </style>\n</head>\n<body>\n    {{{nav}}}\n    <div class=\"login-page bg-light\">\n        <div class=\"container\">\n            <div class=\"row\">\n                <div class=\"col-lg-10 offset-lg-1\">\n                    {{#token.username}}\n                    <div class=\"alert alert-primary\" role=\"alert\">\n                        <p>Hoşgeldin {{.}}</p>\n                    </div>\n                    {{/token.username}}\n                    {{#message}}\n                        <div class=\"alert alert-danger\" role=\"alert\">\n                            <p>{{.}}</p>\n                        </div>\n                    {{/message}}\n                    {{#successMessage}}\n                        <div class=\"alert alert-success\" role=\"alert\">\n                            <p>{{.}}</p>\n                        </div>\n                    {{/successMessage}}\n                  <h3 class=\"mb-3\">Kategori Tanımla</h3>\n                    <div class=\"bg-white shadow rounded\">\n                        <div class=\"row\">\n                            <div class=\"col-md-7 pe-0\">\n                                <div class=\"form-left h-100 py-5 px-5\">\n                                    <form method=\"post\" action=\"/kategori-olustur\" class=\"row g-4\">\n                                            <div class=\"col-12\">\n                                                <label>Kategori Adı<span class=\"text-danger\">*</span></label>\n                                                <div class=\"input-group\">\n                                                    <div class=\"input-group-text\"><i class=\"bi bi-person-fill\"></i></div>\n                                                    <input value=\"{{formData.kategoriAdi}}\" required type=\"text\" class=\"form-control\" placeholder=\"Kategori adı giriniz\" name=\"kategoriAdi\">\n                                                </div>\n                                            </div>\n\n                                            <div class=\"col-12\">\n                                                <label>Destek Personeli<span class=\"text-danger\">*</span></label>\n                                                <div class=\"input-group\">\n                                                    <div class=\"input-group-text\"><i class=\"bi bi-lock-fill\"></i></div>\n                                                    <select class=\"form-control\" required name=\"destekPersoneli\">\n                                                        <option value=\"\">Kişi seçiniz...</option>\n                                                        {{#users}}\n                                                        <option value=\"{{username}}\">{{displayName}}</option>\n                                                        {{/users}}\n                                                    </select>\n                                                </div>\n                                            </div>\n\n                                            <div class=\"col-12\">\n                                                <button type=\"submit\" class=\"btn btn-primary px-4 float-end mt-4\">Kaydet</button>\n                                            </div>\n                                    </form>\n                                </div>\n                            </div>\n                            <div class=\"col-md-5 ps-0 d-none d-md-block\">\n                                <div class=\"form-right h-100 bg-primary text-white text-center pt-5\">\n                                    <i class=\"bi bi-bootstrap\"></i>\n                                    <h2 class=\"fs-1\">Welcome Back!!!</h2>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                    <p class=\"text-end text-secondary mt-3\">Bootstrap 5 Ticket Kategori Tanımla</p>\n                    <table class=\"table\">\n                        <thead>\n                            <tr>\n                            <th scope=\"col\">Kategori Adı</th>\n                            <th scope=\"col\">Destek Personeli</th>\n                            <th scope=\"col\">İşlem Zamanı</th>\n                            <th scope=\"col\">İşlem Sahibi</th>\n                            <th scope=\"col\">#</th>\n                            </tr>\n                        </thead>\n                        <tbody>\n                            {{#categories}}\n                                <tr>\n                                    <td>{{kategoriAdi}}</td>\n                                    <td>{{destekPersoneli}}</td>\n                                    <td>{{stamp.createdAt}}</td>\n                                    <td>{{stamp.user}}</td>\n                                    <td>\n                                        <button type=\"button\" class=\"btn btn-info\">Düzenle</button>\n                                        <button type=\"button\" class=\"btn btn-danger\">Sil</button>\n                                    </td>\n                                </tr>\n                            {{/categories}}\n                        </tbody>\n                        </table>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <!-- Bootstrap JS -->\n     \n</body>\n</html>",
         "output": "str",
-        "x": 840,
+        "x": 1480,
         "y": 280,
         "wires": [
             [
-                "d76746e3737b51cb",
-                "4fcead99967f2e14"
+                "d76746e3737b51cb"
             ]
         ]
     },
@@ -1151,11 +1542,11 @@
         "links": [
             "7e5f69eb1de19993"
         ],
-        "x": 705,
+        "x": 1215,
         "y": 240,
         "wires": [
             [
-                "b40f571843823f62"
+                "400d4558ad1e936d"
             ]
         ]
     },
@@ -1166,25 +1557,8 @@
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 990,
+        "x": 1630,
         "y": 280,
-        "wires": []
-    },
-    {
-        "id": "4fcead99967f2e14",
-        "type": "debug",
-        "z": "44aa120845cd32a5",
-        "name": "debug 18",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1000,
-        "y": 240,
         "wires": []
     },
     {
@@ -1198,12 +1572,12 @@
         "output": "toArray",
         "maxTimeMS": "0",
         "handleDocId": false,
-        "name": "",
-        "x": 670,
+        "name": "Kullanıcılar",
+        "x": 690,
         "y": 280,
         "wires": [
             [
-                "b40f571843823f62"
+                "c51337a94aeef6ac"
             ]
         ]
     },
@@ -1588,27 +1962,9 @@
         "y": 440,
         "wires": [
             [
-                "75c704ca7bf972e8",
                 "3a2d5823e7c5d286"
             ]
         ]
-    },
-    {
-        "id": "75c704ca7bf972e8",
-        "type": "debug",
-        "z": "44aa120845cd32a5",
-        "name": "debug 17",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1340,
-        "y": 400,
-        "wires": []
     },
     {
         "id": "91147dfff318cb43",
@@ -1723,6 +2079,869 @@
         "statusType": "auto",
         "x": 980,
         "y": 100,
+        "wires": []
+    },
+    {
+        "id": "400d4558ad1e936d",
+        "type": "subflow:d5ba1d0c6c7ea686",
+        "z": "44aa120845cd32a5",
+        "name": "",
+        "x": 1330,
+        "y": 280,
+        "wires": [
+            [
+                "b40f571843823f62"
+            ]
+        ]
+    },
+    {
+        "id": "abd27b23f3b2dcdd",
+        "type": "mongodb4",
+        "z": "44aa120845cd32a5",
+        "clientNode": "9f8e1da7e1e352f6",
+        "mode": "collection",
+        "collection": "kategori",
+        "operation": "find",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "kategoriler",
+        "x": 990,
+        "y": 280,
+        "wires": [
+            [
+                "f8432b13a3bf65ba"
+            ]
+        ]
+    },
+    {
+        "id": "c51337a94aeef6ac",
+        "type": "change",
+        "z": "44aa120845cd32a5",
+        "name": "users",
+        "rules": [
+            {
+                "t": "move",
+                "p": "payload",
+                "pt": "msg",
+                "to": "users",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 850,
+        "y": 280,
+        "wires": [
+            [
+                "abd27b23f3b2dcdd"
+            ]
+        ]
+    },
+    {
+        "id": "f8432b13a3bf65ba",
+        "type": "change",
+        "z": "44aa120845cd32a5",
+        "name": "categories",
+        "rules": [
+            {
+                "t": "move",
+                "p": "payload",
+                "pt": "msg",
+                "to": "categories",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1170,
+        "y": 280,
+        "wires": [
+            [
+                "400d4558ad1e936d"
+            ]
+        ]
+    },
+    {
+        "id": "be1d56890812dba3",
+        "type": "catch",
+        "z": "ecdce1885c45ab19",
+        "name": "",
+        "scope": null,
+        "uncaught": false,
+        "x": 140,
+        "y": 80,
+        "wires": [
+            [
+                "87b2d967820e072f",
+                "7b8eb820dd65f5c6"
+            ]
+        ]
+    },
+    {
+        "id": "87b2d967820e072f",
+        "type": "change",
+        "z": "ecdce1885c45ab19",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "message",
+                "pt": "msg",
+                "to": "error.message",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 330,
+        "y": 80,
+        "wires": [
+            [
+                "c62ef1cf9660be77"
+            ]
+        ]
+    },
+    {
+        "id": "7b8eb820dd65f5c6",
+        "type": "debug",
+        "z": "ecdce1885c45ab19",
+        "name": "ERROR",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 300,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "3f450fcebc31e3d9",
+        "type": "http in",
+        "z": "ecdce1885c45ab19",
+        "name": "",
+        "url": "/ticket-destek",
+        "method": "get",
+        "upload": false,
+        "skipBodyParsing": false,
+        "swaggerDoc": "",
+        "x": 190,
+        "y": 240,
+        "wires": [
+            [
+                "8efe01cfda35ad1a"
+            ]
+        ]
+    },
+    {
+        "id": "8efe01cfda35ad1a",
+        "type": "subflow:ab3b90f3594ffeac",
+        "z": "ecdce1885c45ab19",
+        "name": "",
+        "x": 390,
+        "y": 240,
+        "wires": [
+            [
+                "51dc5ffc87397ffc"
+            ],
+            [
+                "51dc5ffc87397ffc"
+            ]
+        ]
+    },
+    {
+        "id": "56f9afe78d93069f",
+        "type": "template",
+        "z": "ecdce1885c45ab19",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "\n<!DOCTYPE html>\n<html lang=\"tr\">\n<head>\n    <title>Ticket Deste</title>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css\">\n  <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\">   \n <style>\n    a {\n        text-decoration: none;\n    }\n    .page-body {\n        width: 100%;\n        height: 100vh;\n        display: inline-block;\n        display: flex;\n        align-items: center;\n    }\n    .form-right i {\n        font-size: 100px;\n    }\n </style>\n</head>\n<body>\n    {{{nav}}}\n    <div class=\"bg-light page-body\">\n        <div class=\"container\">\n            <div class=\"row\">\n                <div class=\"col-lg-10 offset-lg-1\">\n                    {{#token.username}}\n                    <div class=\"alert alert-primary\" role=\"alert\">\n                        <p>Hoşgeldin {{.}}</p>\n                    </div>\n                    {{/token.username}}\n                    {{#message}}\n                        <div class=\"alert alert-danger\" role=\"alert\">\n                            <p>{{.}}</p>\n                        </div>\n                    {{/message}}\n                    {{#successMessage}}\n                        <div class=\"alert alert-success\" role=\"alert\">\n                            <p>{{.}}</p>\n                        </div>\n                    {{/successMessage}}\n                    <h3 class=\"mb-3\">Ticket Destek</h3>\n                    {{#formData.ticketId}}\n                    <div class=\"bg-white shadow rounded\">\n                        <div class=\"row\">\n                            <div class=\"col-md-7 pe-0\">\n                                <div class=\"form-left h-100 py-5 px-5\">                                    \n                                        <form method=\"post\" action=\"/ticket-cevapla\" class=\"row g-4\">\n                                                <input type=\"hidden\" name=\"ticketId\" value=\"{{formData.ticketId}}\">\n                                                <div class=\"col-12\">\n                                                    <label>Açıklama<span class=\"text-danger\">*</span></label>\n                                                    <div class=\"input-group\">\n                                                        <div class=\"input-group-text\"><i class=\"bi bi-person-fill\"></i></div>\n                                                        <textarea class=\"form-control\" required rows=\"4\" placeholder=\"Açıklama giriniz\" name=\"aciklama\">{{formData.aciklama}}</textarea>\n                                                    </div>\n                                                </div>\n\n                                                <div class=\"col-12\">\n                                                    <label>Durum<span class=\"text-danger\">*</span></label>\n                                                    <div class=\"input-group\">\n                                                        <div class=\"input-group-text\"><i class=\"bi bi-lock-fill\"></i></div>\n                                                        <select class=\"form-control\" required name=\"durum\">\n                                                            <option value=\"\">Durum seçiniz...</option>                   \n                                                            <option value=\"İşleme Alındı\">İşleme Alındı</option>\n                                                            <option value=\"Teste Gönderildi\">Teste Gönderildi</option>\n                                                            <option value=\"Tamamlandı\">Tamamlandı</option>\n                                                            <option value=\"Reddedildi\">Reddedildi</option>\n                                                        </select>\n                                                    </div>\n                                                </div>\n\n                                                <div class=\"col-12\">\n                                                    <button type=\"submit\" class=\"btn btn-primary px-4 float-end mt-4\">Gönder</button>\n                                                </div>\n                                        </form>\n                                </div>\n                            </div>\n                            <div class=\"col-md-5 ps-0 d-none d-md-block\">\n                                <div class=\"form-right h-100 bg-primary text-white text-center pt-5\">\n                                    <i class=\"bi bi-bootstrap\"></i>\n                                    <h2 class=\"fs-1\">{{formData.ticketKonu}} konulu ticketa bakılıyor!!!</h2>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                    {{/formData.ticketId}}\n                    <p class=\"text-end text-secondary mt-3\">Bootstrap 5 Ticket Destek</p>\n                    {{^formData.ticketId}}\n                    <table class=\"table\">\n                        <thead>\n                            <tr>\n                                <th scope=\"col\">Konu</th>\n                                <th scope=\"col\">Açıklama</th>\n                                <th scope=\"col\">Destek Personeli</th>\n                                <th scope=\"col\">Durumu</th>\n                                <th scope=\"col\">#</th>\n                            </tr>\n                        </thead>\n                        <tbody>\n                            {{#tickets}}\n                            <tr>\n                                <td>{{konu}}</td>\n                                <td>{{aciklama}}</td>\n                                <td>{{destekPersoneli}}</td>\n                                <td>{{durum}}</td>\n                                <td>\n                                    <form method=\"get\" action=\"/ticket-destek\">\n                                        <input type=\"hidden\" name=\"ticketId\" value=\"{{_id}}\">\n                                        <button type=\"submit\" class=\"btn btn-secondary\">Cevapla</button>\n                                    </form>\n                                </td>\n                            </tr>\n                            {{/tickets}}\n                        </tbody>\n                        </table>\n                    {{/formData.ticketId}}\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <!-- Bootstrap JS -->\n     \n</body>\n</html>",
+        "output": "str",
+        "x": 2020,
+        "y": 240,
+        "wires": [
+            [
+                "e5035465e842b258"
+            ]
+        ]
+    },
+    {
+        "id": "e5035465e842b258",
+        "type": "http response",
+        "z": "ecdce1885c45ab19",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 2170,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "c62ef1cf9660be77",
+        "type": "link out",
+        "z": "ecdce1885c45ab19",
+        "name": "link out 15",
+        "mode": "link",
+        "links": [
+            "03de5bb5d81d3b03"
+        ],
+        "x": 475,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "03de5bb5d81d3b03",
+        "type": "link in",
+        "z": "ecdce1885c45ab19",
+        "name": "home-catch",
+        "links": [
+            "c62ef1cf9660be77"
+        ],
+        "x": 1735,
+        "y": 200,
+        "wires": [
+            [
+                "bd6570d80f188428"
+            ]
+        ]
+    },
+    {
+        "id": "bd6570d80f188428",
+        "type": "subflow:d5ba1d0c6c7ea686",
+        "z": "ecdce1885c45ab19",
+        "name": "",
+        "x": 1870,
+        "y": 240,
+        "wires": [
+            [
+                "56f9afe78d93069f",
+                "d7482622f7fbd32c"
+            ]
+        ]
+    },
+    {
+        "id": "b8cf38921af59bc7",
+        "type": "mongodb4",
+        "z": "ecdce1885c45ab19",
+        "clientNode": "9f8e1da7e1e352f6",
+        "mode": "collection",
+        "collection": "kategori",
+        "operation": "find",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "kategori",
+        "x": 740,
+        "y": 240,
+        "wires": [
+            [
+                "7f211546e1f7db71"
+            ]
+        ]
+    },
+    {
+        "id": "7f211546e1f7db71",
+        "type": "change",
+        "z": "ecdce1885c45ab19",
+        "name": "categories",
+        "rules": [
+            {
+                "t": "move",
+                "p": "payload",
+                "pt": "msg",
+                "to": "categories",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 910,
+        "y": 240,
+        "wires": [
+            [
+                "dcd2260794888e9b"
+            ]
+        ]
+    },
+    {
+        "id": "51dc5ffc87397ffc",
+        "type": "function",
+        "z": "ecdce1885c45ab19",
+        "name": "myCategories",
+        "func": "msg.payload = [\n    {\n        destekPersoneli: msg.token?.username\n    }\n]\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 240,
+        "wires": [
+            [
+                "b8cf38921af59bc7"
+            ]
+        ]
+    },
+    {
+        "id": "a18cf14fa01ead21",
+        "type": "subflow:ab3b90f3594ffeac",
+        "z": "ecdce1885c45ab19",
+        "name": "",
+        "x": 390,
+        "y": 440,
+        "wires": [
+            [
+                "372ecb20509b1c24"
+            ],
+            [
+                "e913d1b3bd3e1672"
+            ]
+        ]
+    },
+    {
+        "id": "b9093540fb28628a",
+        "type": "http in",
+        "z": "ecdce1885c45ab19",
+        "name": "",
+        "url": "/ticket-cevapla",
+        "method": "post",
+        "upload": false,
+        "skipBodyParsing": false,
+        "swaggerDoc": "",
+        "x": 180,
+        "y": 440,
+        "wires": [
+            [
+                "a18cf14fa01ead21",
+                "d0743ca2999e539a"
+            ]
+        ]
+    },
+    {
+        "id": "372ecb20509b1c24",
+        "type": "function",
+        "z": "ecdce1885c45ab19",
+        "name": "validasyon&mql",
+        "func": "const requireFields = {\n    \"durum\": \"Durum\",\n    \"aciklama\": \"Açıklama\",\n    \"ticketId\": \"Ticket Id\"\n}\nmsg.formData = msg.payload\n\nfor(let field in msg.formData) {\n    if(requireFields[field] && msg.formData[field]) continue\n    node.error(requireFields[field] + \" alanı dolu olmak zorundadır.\", msg);\n    return\n}\n\nmsg.payload = [\n    {\n        destekPersoneli: msg.token?.username\n    }\n]\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 420,
+        "wires": [
+            [
+                "1d9ee0bfdac3a21b"
+            ]
+        ]
+    },
+    {
+        "id": "e913d1b3bd3e1672",
+        "type": "change",
+        "z": "ecdce1885c45ab19",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "message",
+                "pt": "msg",
+                "to": "Yetkisiz erişim.",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 590,
+        "y": 480,
+        "wires": [
+            [
+                "53ef5e383dbf1ec5"
+            ]
+        ]
+    },
+    {
+        "id": "53ef5e383dbf1ec5",
+        "type": "link out",
+        "z": "ecdce1885c45ab19",
+        "name": "link out 16",
+        "mode": "link",
+        "links": [
+            "244b4006e2e1fc1c"
+        ],
+        "x": 735,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "3192e6e1440e7698",
+        "type": "mongodb4",
+        "z": "ecdce1885c45ab19",
+        "clientNode": "9f8e1da7e1e352f6",
+        "mode": "collection",
+        "collection": "ticket",
+        "operation": "updateOne",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": true,
+        "name": "",
+        "x": 1890,
+        "y": 380,
+        "wires": [
+            [
+                "8e0386bbcace9b9e",
+                "88a7a4013216d6e3"
+            ]
+        ]
+    },
+    {
+        "id": "8e0386bbcace9b9e",
+        "type": "function",
+        "z": "ecdce1885c45ab19",
+        "name": "ticket res",
+        "func": "// Başarı Kontrolü !!\nif(msg.payload.acknowledged && msg.payload.matchedCount) {\n    msg.successMessage = msg.ticket.konu + \" konulu ticketınız başarıyla cevaplandı.\"\n    delete msg.formData\n    return msg\n}\n\nmsg.message = msg.ticket.konu + \" konulu ticketınız cevaplanamadı.\"\nreturn [null, msg];",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2040,
+        "y": 380,
+        "wires": [
+            [
+                "78fb19d09da95d5d"
+            ],
+            [
+                "9e5cd13feaf0c8a0"
+            ]
+        ]
+    },
+    {
+        "id": "78fb19d09da95d5d",
+        "type": "link out",
+        "z": "ecdce1885c45ab19",
+        "name": "link out 17",
+        "mode": "link",
+        "links": [
+            "4c33e98384f81451"
+        ],
+        "x": 2175,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "9e5cd13feaf0c8a0",
+        "type": "link out",
+        "z": "ecdce1885c45ab19",
+        "name": "link out 18",
+        "mode": "link",
+        "links": [
+            "4c33e98384f81451"
+        ],
+        "x": 2175,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "9cb41573315da4d1",
+        "type": "mongodb4",
+        "z": "ecdce1885c45ab19",
+        "clientNode": "9f8e1da7e1e352f6",
+        "mode": "collection",
+        "collection": "ticket",
+        "operation": "find",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": true,
+        "name": "ticket",
+        "x": 1270,
+        "y": 240,
+        "wires": [
+            [
+                "b1d888d8024bc2ac"
+            ]
+        ]
+    },
+    {
+        "id": "b1d888d8024bc2ac",
+        "type": "change",
+        "z": "ecdce1885c45ab19",
+        "name": "tickets",
+        "rules": [
+            {
+                "t": "move",
+                "p": "payload",
+                "pt": "msg",
+                "to": "tickets",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1430,
+        "y": 240,
+        "wires": [
+            [
+                "953b52b675bdf671"
+            ]
+        ]
+    },
+    {
+        "id": "4c33e98384f81451",
+        "type": "link in",
+        "z": "ecdce1885c45ab19",
+        "name": "root-error",
+        "links": [
+            "9e5cd13feaf0c8a0",
+            "78fb19d09da95d5d",
+            "63a1d8e488386d5b"
+        ],
+        "x": 435,
+        "y": 200,
+        "wires": [
+            [
+                "51dc5ffc87397ffc"
+            ]
+        ]
+    },
+    {
+        "id": "d0743ca2999e539a",
+        "type": "debug",
+        "z": "ecdce1885c45ab19",
+        "name": "debug 10",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 380,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "d7482622f7fbd32c",
+        "type": "debug",
+        "z": "ecdce1885c45ab19",
+        "name": "debug 13",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2020,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "953b52b675bdf671",
+        "type": "function",
+        "z": "ecdce1885c45ab19",
+        "name": "ticket destek pers.",
+        "func": "if(msg.req.query.ticketId) {\n    let ticket = msg.tickets[0]\n    msg.formData = {\n        ticketId: ticket._id,\n        ticketKonu: ticket.konu,\n        ...(msg.formData || {})\n    }\n} else {\n    msg.tickets.forEach(x => x.destekPersoneli = msg.categories.find(y => y.kategoriAdi === x.kategori).destekPersoneli)\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1650,
+        "y": 240,
+        "wires": [
+            [
+                "bd6570d80f188428"
+            ]
+        ]
+    },
+    {
+        "id": "dcd2260794888e9b",
+        "type": "function",
+        "z": "ecdce1885c45ab19",
+        "name": "myTickets",
+        "func": "msg.payload = [\n    {\n        kategori: {\n            $in: msg.categories.map(x => x.kategoriAdi)\n        }\n    }\n]\n\nif(msg.req.query.ticketId) {\n    msg.payload[0]._id = msg.req.query.ticketId\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1110,
+        "y": 240,
+        "wires": [
+            [
+                "9cb41573315da4d1"
+            ]
+        ]
+    },
+    {
+        "id": "af0e0ed85db2e67b",
+        "type": "mongodb4",
+        "z": "ecdce1885c45ab19",
+        "clientNode": "9f8e1da7e1e352f6",
+        "mode": "collection",
+        "collection": "ticket",
+        "operation": "findOne",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": true,
+        "name": "",
+        "x": 1260,
+        "y": 420,
+        "wires": [
+            [
+                "3fad82d457ddc3ba",
+                "a6a1b806eba8ea8b"
+            ]
+        ]
+    },
+    {
+        "id": "85c2c24f2501a6a6",
+        "type": "switch",
+        "z": "ecdce1885c45ab19",
+        "name": "",
+        "property": "ticket",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "nnull"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1550,
+        "y": 420,
+        "wires": [
+            [
+                "07cd6e15b27202a0"
+            ],
+            [
+                "e9afa1237905cd0a"
+            ]
+        ]
+    },
+    {
+        "id": "e9afa1237905cd0a",
+        "type": "change",
+        "z": "ecdce1885c45ab19",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "message",
+                "pt": "msg",
+                "to": "Yetkisiz işlem tespit edildi.",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1730,
+        "y": 460,
+        "wires": [
+            [
+                "63a1d8e488386d5b"
+            ]
+        ]
+    },
+    {
+        "id": "07cd6e15b27202a0",
+        "type": "function",
+        "z": "ecdce1885c45ab19",
+        "name": "update mql",
+        "func": "msg.payload = [\n    {\n        _id: msg.formData.ticketId\n    },\n    {\n        $set: {\n            durum: msg.formData.durum\n        },\n        $push: {\n            log: {\n                ...msg.formData,\n                user: msg.token.username,\n                stamp: {\n                    user: msg.token.username,\n                    createdAt: new Date()\n                } \n            }\n        }\n    }\n]\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1710,
+        "y": 380,
+        "wires": [
+            [
+                "3192e6e1440e7698"
+            ]
+        ]
+    },
+    {
+        "id": "63a1d8e488386d5b",
+        "type": "link out",
+        "z": "ecdce1885c45ab19",
+        "name": "link out 20",
+        "mode": "link",
+        "links": [
+            "4c33e98384f81451"
+        ],
+        "x": 1865,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "1d9ee0bfdac3a21b",
+        "type": "mongodb4",
+        "z": "ecdce1885c45ab19",
+        "clientNode": "9f8e1da7e1e352f6",
+        "mode": "collection",
+        "collection": "kategori",
+        "operation": "find",
+        "output": "toArray",
+        "maxTimeMS": "0",
+        "handleDocId": false,
+        "name": "kategori",
+        "x": 760,
+        "y": 420,
+        "wires": [
+            [
+                "c16a63f11ef9519a"
+            ]
+        ]
+    },
+    {
+        "id": "c16a63f11ef9519a",
+        "type": "change",
+        "z": "ecdce1885c45ab19",
+        "name": "categories",
+        "rules": [
+            {
+                "t": "move",
+                "p": "payload",
+                "pt": "msg",
+                "to": "categories",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 930,
+        "y": 420,
+        "wires": [
+            [
+                "2a37758864ccc73a"
+            ]
+        ]
+    },
+    {
+        "id": "2a37758864ccc73a",
+        "type": "function",
+        "z": "ecdce1885c45ab19",
+        "name": "myTicket",
+        "func": "msg.payload = [\n    {\n        kategori: {\n            $in: msg.categories.map(x => x.kategoriAdi)\n        },\n        _id: msg.formData.ticketId\n    }\n]\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1100,
+        "y": 420,
+        "wires": [
+            [
+                "af0e0ed85db2e67b"
+            ]
+        ]
+    },
+    {
+        "id": "88a7a4013216d6e3",
+        "type": "debug",
+        "z": "ecdce1885c45ab19",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2040,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "a6a1b806eba8ea8b",
+        "type": "change",
+        "z": "ecdce1885c45ab19",
+        "name": "ticket",
+        "rules": [
+            {
+                "t": "move",
+                "p": "payload",
+                "pt": "msg",
+                "to": "ticket",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1410,
+        "y": 420,
+        "wires": [
+            [
+                "85c2c24f2501a6a6"
+            ]
+        ]
+    },
+    {
+        "id": "3fad82d457ddc3ba",
+        "type": "debug",
+        "z": "ecdce1885c45ab19",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1400,
+        "y": 360,
         "wires": []
     }
 ]
