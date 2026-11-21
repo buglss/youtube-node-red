@@ -1,8 +1,8 @@
-# Node-RED: Giriş ve Kategori Uygulaması
+# Ticket Sistem
 
-Bu proje, Node-RED üzerinde çalışan bir web uygulamasıdır. MongoDB'deki kullanıcılarla giriş yapmayı, çıkış yapmayı ve giriş yaptıktan sonra bir destek personeli seçerek kategori oluşturmayı sağlar. Kullanıcı parolaları bcrypt ile özetlenir; oturum için tarayıcıda `token` adlı çerezde saklanan JWT kullanılır.
+Ticket Sistem, Node-RED üzerinde aşamalı olarak geliştirilen bir ticket destek uygulamasıdır. npm paket adı `ticket-sistem` olarak tanımlıdır. MongoDB'deki kullanıcılarla giriş ve çıkış yapmayı, destek personeli atayarak kategori tanımlamayı, ticket oluşturmayı ve oluşturduğunuz ticketları listelemeyi sağlar. Destek personeli, kendisine atanmış kategorilerdeki ticketları yanıtlayabilir ve durumlarını güncelleyebilir. Kullanıcı parolaları bcrypt ile özetlenir; oturum için tarayıcıda `token` adlı çerezde saklanan JWT kullanılır.
 
-Uygulamanın kodu `flows.json` dosyasındaki akışlardır. Node-RED, bu akışları tarayıcıdan görüntüleyip düzenleyebileceğiniz bir geliştirme ortamıdır. MongoDB ise kullanıcı ve kategori kayıtlarını bilgisayarınızda saklayan ayrı bir veritabanı servisidir. Uygulamanın çalışması için ikisinin de açık olması gerekir.
+Uygulamanın kodu `flows.json` dosyasındaki akışlardır. Node-RED, bu akışları tarayıcıdan görüntüleyip düzenleyebileceğiniz bir geliştirme ortamıdır. MongoDB ise kullanıcı, kategori ve ticket kayıtları ile yanıt geçmişini bilgisayarınızda saklayan ayrı bir veritabanı servisidir. Uygulamanın çalışması için ikisinin de açık olması gerekir.
 
 Bu rehber MongoDB'nin bilgisayara doğrudan kurulduğu yerel kullanım içindir. Windows, macOS ve Linux için Ubuntu 24.04 LTS adımları verilmiştir.
 
@@ -227,7 +227,7 @@ node node_modules/node-red/red.js --userDir . -D uiHost=127.0.0.1
 
 Terminalde `Started flows` mesajını bekleyin. `Settings file`, `User directory` ve `Flows file` satırlarının bu projeyi gösterdiğini kontrol edin. Terminali açık bırakın; kapatırsanız uygulama durur.
 
-Tarayıcıda [http://localhost:1880/](http://localhost:1880/) adresini açın. Bu adres **Node-RED editörüdür**. İlk açılışta karşınıza çıkan tanıtım veya telemetri tercihi ekranını tamamlayıp editöre geçin. Üstte **Login** ve **Kategori** sekmelerini görmelisiniz; akışları ayrıca içe aktarmanız gerekmez.
+Tarayıcıda [http://localhost:1880/admin](http://localhost:1880/admin) adresini açın. Bu adres **Node-RED editörüdür**; `settings.js` içindeki `httpAdminRoot` değeri `/admin` olarak ayarlanmıştır. [http://localhost:1880/](http://localhost:1880/) ise uygulamanın ticket oluşturma ve listeleme sayfasıdır. İlk açılışta karşınıza çıkan tanıtım veya telemetri tercihi ekranını tamamlayıp editöre geçin. Üstte **Root**, **Login**, **Kategori** ve **Destek** sekmelerini görmelisiniz; akışları ayrıca içe aktarmanız gerekmez.
 
 Projede `npm start` komutu tanımlı değildir. Çalıştırmak için yukarıdaki `node ...` komutunu kullanın. `npm test` ise henüz bir test takımı çalıştırmaz; bilerek hata koduyla çıkan varsayılan komuttur.
 
@@ -291,18 +291,18 @@ Listede yukarıdaki beş kullanıcı görünmelidir.
 
 1. Tarayıcıda [http://localhost:1880/login](http://localhost:1880/login) adresini açın.
 2. **Username** alanına `demo`, **Password** alanına `1234` yazıp **login** düğmesine basın.
-3. Başarılı giriş mesajını ve `Hoşgeldin demo` yazısını görmelisiniz. Giriş sayfasında kalmanız normaldir; otomatik kategori sayfasına yönlendirme yoktur.
+3. Başarılı giriş mesajını ve `Hoşgeldin demo` yazısını görmelisiniz. Giriş sayfasında kalmanız normaldir; otomatik yönlendirme yoktur. Üst menüdeki **Ana Sayfa**, **Ticket Kategori** ve **Ticket Destek** bağlantılarıyla sayfalar arasında geçebilirsiniz.
 4. Oturum JWT'sinin süresi akışta **3600 saniye (1 saat)** olarak ayarlanmıştır. Süre dolarsa yeniden giriş yapın.
-5. Çıkış yapmak için `/login` sayfasındaki **logout** düğmesini kullanın. Bu işlem tarayıcıdaki `token` çerezini siler.
+5. Çıkış yapmak için oturum açıkken üst menüde görünen **logout** düğmesini kullanın. Bu işlem tarayıcıdaki `token` çerezini siler.
 
-Sayfalar arasında aynı adresi kullanın: girişte `localhost` kullandıysanız kategori sayfasında da `localhost` kullanın. `127.0.0.1` ve `localhost` tarayıcı çerezleri açısından farklı adreslerdir.
+Sayfalar arasında aynı adresi kullanın: girişte `localhost` kullandıysanız diğer uygulama sayfalarında da `localhost` kullanın. `127.0.0.1` ve `localhost` tarayıcı çerezleri açısından farklı adreslerdir.
 
 ### Kategori oluşturma
 
 1. Giriş yaptığınız **aynı tarayıcıda** [http://localhost:1880/ticket-kategori](http://localhost:1880/ticket-kategori) adresini açın.
 2. **Kategori Adı** alanına örneğin `Teknik Destek` yazın.
 3. **Destek Personeli** listesinden bir kullanıcı seçin. Liste `user` koleksiyonundaki kullanıcılardan oluşur.
-4. **Kaydet** düğmesine basın. Başarı mesajını görmelisiniz.
+4. **Kaydet** düğmesine basın. Başarı mesajını görmelisiniz. Formun altındaki tabloda kategori adı, atanan personelin kullanıcı adı, işlem zamanı ve işlemi yapan kullanıcı listelenir.
 5. Aynı kategori adıyla tekrar kayıt gönderdiğinizde `Kategori zaten oluşturulmuş.` mesajı gösterilir.
 
 Giriş yapmadan bu sayfayı açarsanız `Yetkisiz erişim.` mesajıyla giriş formu gösterilir; adres çubuğunun otomatik olarak `/login` adresine değişmesi beklenmez.
@@ -315,16 +315,50 @@ mongosh "mongodb://127.0.0.1:27017/login" --quiet --eval "db.kategori.find().toA
 
 Kaydın `kategoriAdi`, `destekPersoneli`, `stamp.user` ve `stamp.createdAt` alanlarını görebilirsiniz. `stamp.user`, kategoriyi oluşturan giriş yapmış kullanıcının adıdır.
 
+### Ticket oluşturma ve kendi ticketlarınızı izleme
+
+Önce en az bir kategori oluşturun. Örneğin `demo` hesabıyla **Teknik Destek** kategorisini oluşturup destek personeli olarak **Memo** (`memo`) seçin.
+
+1. Giriş yaptığınız tarayıcıda üst menüden **Ana Sayfa** bağlantısına veya [http://localhost:1880/](http://localhost:1880/) adresine gidin.
+2. **Konu**, **Kategori** ve **Açıklama** alanlarını doldurup **Gönder** düğmesine basın.
+3. Başarı mesajından sonra ticketınızı formun altındaki tabloda görmelisiniz. Tablo, oturumdaki kullanıcının oluşturduğu ticketları; konu, açıklama, destek personeli ve durum bilgileriyle gösterir.
+4. Yeni ticketın başlangıç durumu **Yeni** olur. Destek personeli yanıt verdiğinde güncel durumu görmek için ana sayfayı yenileyin.
+
+Ticket, `ticket` koleksiyonuna `konu`, `kategori`, `aciklama`, `user`, `durum` ve `stamp` alanlarıyla kaydedilir. `kategori`, kategorinin adını; `user`, ticketı açan kullanıcının adını tutar. Listede görünen destek personeli kategori kaydından bulunur.
+
+Ana sayfa oturum olmadan da açılabilir; ticket oluşturma işlemi giriş gerektirir. Kişisel ticket listenizi görmek için önce giriş yapın. Tablodaki **Mesaj** düğmesine bağlı bir işlem henüz yoktur.
+
+### Destek personeli olarak yanıtlama
+
+1. **logout** ile çıkış yapıp kategoriye atadığınız destek personeli hesabıyla giriş yapın. Yukarıdaki örnekte kullanıcı adı `memo`, parola `1234` olur. Ayrı bir tarayıcı profili de kullanabilirsiniz.
+2. Üst menüdeki **Ticket Destek** bağlantısını veya [http://localhost:1880/ticket-destek](http://localhost:1880/ticket-destek) adresini açın. Liste, oturumdaki kullanıcıya atanmış kategorilerdeki ticketları getirir.
+3. İlgili ticketın **Cevapla** düğmesine basın. Yanıt formu `/ticket-destek?ticketId=...` adresinde açılır.
+4. **Açıklama** alanına yanıtınızı yazın ve **Durum** listesinden **İşleme Alındı**, **Teste Gönderildi**, **Tamamlandı** veya **Reddedildi** seçin.
+5. **Gönder** düğmesine basın. Başarı mesajından sonra ticket listesi yeniden gösterilir.
+
+Yanıt gönderilirken ticketın, giriş yapan personele atanmış bir kategoride olduğu kontrol edilir. Eşleşme bulunmazsa `Yetkisiz işlem tespit edildi.` mesajı gösterilir. Yanıtın açıklaması ticketın ilk açıklamasını değiştirmez; `log` dizisine eklenir. Ticketın `durum` alanı ise seçilen değerle güncellenir. Her yanıt kaydı `ticketId`, `aciklama`, `durum`, `user` ve `stamp` alanlarını içerir.
+
+Ticketları ve yanıt geçmişini ayrı bir terminalde kontrol edebilirsiniz:
+
+```sh
+mongosh "mongodb://127.0.0.1:27017/login" --quiet --eval "db.ticket.find().toArray()"
+```
+
 ### Kullanılabilir adresler
 
 | Yöntem | Yol | İşlev |
 | --- | --- | --- |
-| GET | `/` | Node-RED editörü |
+| GET | `/admin` | Node-RED editörü |
+| GET | `/` | Ticket oluşturma formu ve oturumdaki kullanıcının ticket listesi |
 | GET | `/login` | Giriş formu |
 | POST | `/login` | `username` ve `password` form alanlarıyla giriş |
 | POST | `/logout` | Çerez silerek çıkış |
-| GET | `/ticket-kategori` | Giriş gerektiren kategori formu |
+| GET | `/ticket-kategori` | Giriş gerektiren kategori formu ve kategori listesi |
 | POST | `/kategori-olustur` | `kategoriAdi` ve `destekPersoneli` form alanlarıyla kategori kaydı |
+| POST | `/ticket-olustur` | Giriş gerektirir; `konu`, `kategori` ve `aciklama` alanlarıyla ticket kaydı |
+| GET | `/ticket-destek` | Oturumdaki personele atanmış kategorilerdeki ticket listesi |
+| GET | `/ticket-destek?ticketId=...` | Seçilen ticketın yanıt formu |
+| POST | `/ticket-cevapla` | Giriş gerektirir; `ticketId`, `aciklama` ve `durum` alanlarıyla yanıt ve durum güncelleme |
 
 Form işlemlerinin yanıtları HTML sayfalarıdır. POST adreslerini adres çubuğuna yazarak çağırmak yerine ilgili form düğmelerini kullanın.
 
@@ -356,15 +390,25 @@ MongoDB servisini de durdurmak isterseniz işletim sisteminize uygun **tek** kom
 
 | Dosya | İçeriği |
 | --- | --- |
-| `flows.json` | Login, Kategori ve ortak Check Token alt akışı; HTML şablonları ve uygulama mantığı |
+| `flows.json` | Root, Login, Kategori ve Destek akışları; ortak Check Token ve Nav alt akışları; HTML şablonları ve uygulama mantığı |
 | `flows_cred.json` | Node-RED'in şifreli bağlantı kimlik bilgileri |
-| `settings.js` | Akış dosyası, port ve Node-RED çalışma ayarları |
+| `settings.js` | Akış dosyası, port, `/admin` editör yolu ve Node-RED çalışma ayarları |
 | `package.json` | Bağımlılık aralıkları ve npm komutları |
 | `package-lock.json` | Tekrarlanabilir kurulum için kilitlenmiş paket sürümleri |
 | `.vscode/launch.json` | VS Code'da `Node-Red Start` adlı hata ayıklama yapılandırması |
 | `.gitignore` | `node_modules`, `.config*` ve `.flows*` dosyalarını Git dışında tutar |
 
 Node-RED yerel `.config*` ayarlarını ve akış yedeklerini çalışırken oluşturabilir. MongoDB kayıtları bu dosyalarda veya Git deposunda saklanmaz; MongoDB'nin veri klasöründe tutulur.
+
+### MongoDB koleksiyonları
+
+Tüm koleksiyonlar varsayılan olarak `login` veritabanındadır.
+
+| Koleksiyon | İçeriği |
+| --- | --- |
+| `user` | Kullanıcı adı, bcrypt parola özeti, görünen ad ve oluşturulma zamanı |
+| `kategori` | Kategori adı, atanmış destek personelinin kullanıcı adı ve `stamp` işlem bilgileri |
+| `ticket` | Ticket içeriği, kategori adı, oluşturan kullanıcı, güncel durum, `stamp` ve yanıt geldikçe eklenen `log` dizisi |
 
 ## 12. Sorun giderme
 
@@ -375,7 +419,8 @@ Node-RED yerel `.config*` ayarlarını ve akış yedeklerini çalışırken olu�
 | `EBADENGINE` / desteklenmeyen Node.js | `node --version` çıktısını kontrol edin. Kilitli Node-RED sürümü en az 22.9 ister; bu rehberdeki 26 LTS kurulumunu kullanın. |
 | `package.json` veya `node_modules/node-red/red.js` bulunamıyor | Doğru proje klasöründe olduğunuzu kontrol edin ve `npm ci` işlemini tamamlayın. |
 | `npm ci` kilit dosyası uyumsuzluğu bildiriyor | `package.json` ile `package-lock.json` dosyalarını projenin aynı sürümünden aldığınızı kontrol edin. |
-| Editör boş; Login/Kategori sekmeleri yok | Başlatma komutunda `--userDir .` kullandığınızı ve logdaki `Flows file` yolunun bu projenin `flows.json` dosyası olduğunu kontrol edin. |
+| Editör boş; Root/Login/Kategori/Destek sekmeleri yok | Başlatma komutunda `--userDir .` kullandığınızı ve logdaki `Flows file` yolunun bu projenin `flows.json` dosyası olduğunu kontrol edin. |
+| `/` adresinde editör yerine ticket formu açılıyor | Editörün yeni adresi `/admin` yoludur. |
 | `unknown` düğümler veya eksik düğüm uyarısı | Node-RED'i durdurun, proje klasöründe `npm ci` çalıştırıp yeniden başlatın. |
 | `Failed to decrypt credentials` | Yeni indirdiğiniz kopyada 5. bölümü uygulayın. Mevcut bağlantı bilgileriniz varsa dosyayı yeniden adlandırmayın; o kuruluma ait anahtarı içeren ayarlar ve kimlik bilgisi dosyasının birlikte korunması gerekir. |
 | `ECONNREFUSED`, `MongoServerSelectionError` veya MongoDB işlemi zaman aşımı | MongoDB servisini ve `mongosh` bağlantı kontrolünü deneyin. Node-RED bağlantısında Hostname `127.0.0.1`, Port `27017`, DB Name `login` olmalı. Farklı kurulumda kendi değerlerinizi kullanın. |
@@ -383,6 +428,9 @@ Node-RED yerel `.config*` ayarlarını ve akış yedeklerini çalışırken olu�
 | `Kullanıcı adı veya parola hatalı.` | Önce örnek kullanıcı oluşturma adımını tamamlayın; verilerin bağlandığınız `login.user` koleksiyonunda bulunduğunu kontrol edin. |
 | `Yetkisiz erişim.`, `jwt expired` veya `invalid signature` | Yeniden giriş yapın. Sayfalarda aynı sunucu adını kullanın. JWT Sign ve Check Token içindeki JWT verify düğümlerinin aynı anahtarı kullandığını kontrol edin. |
 | Destek personeli listesi boş | Örnek kullanıcıların oluşturulduğunu ve bağlantının doğru `login` veritabanına gittiğini kontrol edin. |
+| Ticket formunda kategori listesi boş | Önce `/ticket-kategori` sayfasından en az bir kategori oluşturun. |
+| Destek sayfasında ticket görünmüyor | Kategorinin destek personeli olarak giriş yaptığınız kullanıcının atanmış olduğunu ve bu kategoride bir ticket bulunduğunu kontrol edin. |
+| `Yetkisiz işlem tespit edildi.` | Yanıtladığınız ticketın, oturumdaki personele atanmış bir kategoride olduğunu kontrol edin. |
 | Tasarım veya ikonlar eksik | `cdn.jsdelivr.net` erişimini ve internet bağlantısını kontrol edin. |
 
 ### 1880 portu kullanımdaysa
@@ -407,11 +455,15 @@ Safe modda uygulama akışları çalışmaz; **Deploy** yaptığınızda başlar
 
 ## 13. Mevcut kapsam ve doğrulama
 
-Giriş formundaki **Remember me** kutusuna bağlı ek bir işlem, **Forgot Password?** bağlantısına bağlı parola sıfırlama akışı ve kullanıcı kayıt sayfası bulunmaz. Kategori akışında kategori listeleme, düzenleme veya silme sayfası yoktur. Destek personeli listesi ayrı bir rol filtresi uygulamadan kullanıcıları getirir.
+Giriş formundaki **Remember me** kutusuna bağlı ek bir işlem, **Forgot Password?** bağlantısına bağlı parola sıfırlama akışı ve kullanıcı kayıt sayfası bulunmaz. Kategoriler formun altında listelenir; **Düzenle** ve **Sil** düğmelerine bağlı işlem yoktur. Ana sayfadaki **Mesaj** düğmesi de henüz çalışmaz; ticket yanıt geçmişini gösteren bir arayüz bulunmaz. Destek personeli seçimi ayrı bir rol filtresi uygulamadan tüm kullanıcıları getirir. Giriş yapan her kullanıcı kategori oluşturabilir; ayrı bir yönetici rolü tanımlı değildir.
+
+Ana sayfanın ve destek listesinin GET akışları, token yokken de sorgulara devam eder; bu sayfalarda zorunlu giriş kapısı uygulanmamıştır. Ticket oluşturma ve yanıtlama POST akışları token kontrolü yapar. Destek yanıtında kategori ataması kontrol edilir. Yanıt formundaki durum seçenekleri arayüzde tanımlıdır; sunucu akışı bu değerler için ayrıca bir izin listesi doğrulaması yapmaz.
 
 Depodaki JWT düğümlerinde ortak imzalama anahtarı bulunur; Node-RED editörü için `adminAuth` etkin değildir. README'deki başlatma komutu bu nedenle erişimi kendi bilgisayarınızla sınırlar. Örnek `1234` parolaları ve mevcut ayarlar yerel deneme içindir.
 
-8 Kasım 2026'da macOS üzerinde **Node.js 26.12.1**, **npm 11.20.0**, **Node-RED 5.0.9** ve **MongoDB 9.0.4** ile geçici bir veritabanında şu işlemler doğrulandı: giriş sayfasını açma, beş örnek kullanıcıyı oluşturma ve bcrypt parolasını doğrulama, giriş, kategori formunu açma, kategori kaydetme, aynı kategori adını tekrar kaydetmeyi engelleme, oturumsuz erişim mesajı ve çıkış. Yeni kopyadaki şifre çözme uyarısı ve yedek dosyayla ilerleme adımı da kontrol edildi.
+**Önceki sürümün çalışma testi (8 Kasım 2026):** macOS üzerinde **Node.js 26.12.1**, **npm 11.20.0**, **Node-RED 5.0.9** ve **MongoDB 9.0.4** ile geçici bir veritabanında şu işlemler doğrulandı: giriş sayfasını açma, beş örnek kullanıcıyı oluşturma ve bcrypt parolasını doğrulama, giriş, kategori formunu açma, kategori kaydetme, aynı kategori adını tekrar kaydetmeyi engelleme, oturumsuz erişim mesajı ve çıkış. Yeni kopyadaki şifre çözme uyarısı ve yedek dosyayla ilerleme adımı da kontrol edildi.
+
+**21 Kasım 2026 dokümantasyon kontrolü:** README, `flows.json` ve `settings.js` dosyalarındaki güncel akışlar, form alanları, adresler ve veri işlemleriyle karşılaştırılarak güncellendi. Yeni ticket oluşturma, listeleme ve yanıtlama akışları için bu güncelleme sırasında uçtan uca çalışma testi yapılmadı; önceki test kaydı bu yeni özellikleri kapsamaz.
 
 Windows ve Ubuntu kurulum adımları resmî belgelere göre hazırlanmıştır; bu sistemlerde uygulamalı kurulum testi yapılmamıştır. Doğrulama mevcut kurulu bağımlılıklarla yapılmıştır; temiz bir `npm ci` indirmesi bu kontrolün parçası değildir.
 
